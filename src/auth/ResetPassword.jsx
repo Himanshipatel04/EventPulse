@@ -33,19 +33,30 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <h1 style={{ color: 'black', fontSize: '18px' }}>Reset Your Password</h1>
-      <input
-        type="password"
-        placeholder="Enter your new password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleResetPassword} disabled={loading || !password}>
-        {loading ? 'Processing...' : 'Reset Password'}
-      </button>
-      {status && <p>{status}</p>}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+    <div className="flex items-center justify-center h-screen bg-teal-50">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
+        <h1 className="text-3xl font-semibold text-center text-teal-700 mb-6">Reset Your Password</h1>
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-gray-600">New Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your new password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+          />
+        </div>
+        <button
+          onClick={handleResetPassword}
+          disabled={loading || !password}
+          className={`w-full py-2 mt-4 ${loading || !password ? 'bg-teal-300 cursor-not-allowed' : 'bg-teal-700'} text-white rounded-md hover:bg-teal-800 focus:outline-none`}
+        >
+          {loading ? 'Processing...' : 'Reset Password'}
+        </button>
+        {status && <p className="mt-4 text-center text-green-600">{status}</p>}
+        {errorMessage && <p className="mt-4 text-center text-red-600">{errorMessage}</p>}
+      </div>
     </div>
   );
 };
