@@ -14,6 +14,7 @@ import Header from "./common/Header";
 import Footer from "./common/Footer";
 import Login from "./auth/Login";
 import Signup from "./auth/Register";
+import RegisterForEvent from "./pages/RegisterForEvent";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/getStarted" element={<GetStarted />} />
+        <Route path="/register/:eventId/:eventTitle" element={<RegisterForEvent />} />
       </Routes>
       <Footer/>
     </Router>

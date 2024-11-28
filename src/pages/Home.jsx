@@ -1,7 +1,59 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
 
 const Home = () => {
+  const carouselSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const upcomingEvents = [
+    {
+      id: 1,
+      title: "Tech Innovators Summit",
+      date: "Dec 10, 2024",
+      description: "Explore the latest in technology and innovation.",
+    },
+    {
+      id: 2,
+      title: "Cultural Extravaganza",
+      date: "Jan 5, 2025",
+      description: "Experience a night of vibrant cultural performances.",
+    },
+    {
+      id: 3,
+      title: "Startup Expo 2025",
+      date: "Feb 15, 2025",
+      description: "Showcase your startup and connect with investors.",
+    },
+    {
+      id: 4,
+      title: "Art & Design Week",
+      date: "Mar 20, 2025",
+      description: "Discover creative works from artists and designers.",
+    },
+  ];
+
   return (
     <div>
       {/* Hero Section */}
@@ -22,8 +74,36 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Upcoming Events Carousel */}
+      <section className="py-16 bg-teal-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">
+            Upcoming Events
+          </h2>
+          <Slider {...carouselSettings}>
+            {upcomingEvents.map((event) => (
+              <div
+                key={event.id}
+                className="p-6 bg-white rounded-lg shadow-lg text-center"
+              >
+                <h3 className="text-xl font-bold text-teal-700 mb-2 ">
+                  {event.title}
+                </h3>
+                <p className="text-gray-600 mb-4">{event.date}</p>
+                <p className="text-gray-700 mb-4">{event.description}</p>
+                <Link to={`/register/${event.id}/${event.title}`}>
+                  <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg text-sm transition">
+                    Register for Event
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-teal-100">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">
             Key Features

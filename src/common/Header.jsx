@@ -7,7 +7,7 @@ const Header = () => {
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
         <Link to="/">
-          <h1 className="text-3xl font-bold cursor-pointer">Event Pulse</h1>
+          <h1 className="text-3xl font-bold cursor-pointer">EventPulse</h1>
         </Link>
 
         {/* Navigation Links */}

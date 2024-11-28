@@ -1,3 +1,14 @@
+/* Import external styles first */
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
+/* Tailwind CSS directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Any custom CSS styles */
+.slick-slide {
+    padding: 0 15px; /* Add horizontal padding to create space between items */
+  }
+  

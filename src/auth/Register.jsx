@@ -14,13 +14,13 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-teal-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl outline outline-2 outline-teal-500">
         <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">Event Pulse</h2>
         <form onSubmit={handleSignup}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-600">Email</label>
             <div className="relative">
-              <FaEnvelope className="absolute left-3 top-3 text-teal-700" />
+              <FaEnvelope size={18} className="absolute left-3 top-5 text-teal-700" />
               <input
                 type="email"
                 id="email"
@@ -35,7 +35,7 @@ const Signup = () => {
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-600">Password</label>
             <div className="relative">
-              <FaLock className="absolute left-3 top-3 text-teal-700" />
+              <FaLock size={18} className="absolute left-3 top-5 text-teal-700" />
               <input
                 type="password"
                 id="password"
@@ -67,8 +67,8 @@ const Signup = () => {
             Sign Up
           </button>
           <div className="flex justify-between mt-4">
-            <a href="/login" className="text-sm text-teal-700 hover:underline">
-              Already have an account? Login
+            <a href="/login" className="text-sm text-teal-700 ">
+              Already have an account?{" "}<span className="hover:underline hover:text-teal-950">Login</span>
             </a>
           </div>
         </form>

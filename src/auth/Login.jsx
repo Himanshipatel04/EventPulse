@@ -23,14 +23,21 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-teal-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
-        <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">Event Pulse</h2>
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl outline outline-2 outline-teal-500">
+        <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">
+          Event Pulse
+        </h2>
         {!forgotPassword ? (
           <form onSubmit={handleLogin}>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-600">Email</label>
+              <label htmlFor="email" className="block text-gray-600">
+                Email
+              </label>
               <div className="relative">
-                <FaEnvelope className="absolute left-3 top-3 text-teal-700" />
+                <FaEnvelope
+                  size={18}
+                  className="absolute left-3 top-5 text-teal-700"
+                />
                 <input
                   type="email"
                   id="email"
@@ -43,9 +50,14 @@ const Login = () => {
               </div>
             </div>
             <div className="mb-6">
-              <label htmlFor="password" className="block text-gray-600">Password</label>
+              <label htmlFor="password" className="block text-gray-600">
+                Password
+              </label>
               <div className="relative">
-                <FaLock className="absolute left-3 top-3 text-teal-700" />
+                <FaLock
+                  size={18}
+                  className="absolute left-3 top-5 text-teal-700"
+                />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
@@ -60,7 +72,11 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-teal-700"
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword ? (
+                    <FaEyeSlash size={18} className="top-2 relative " />
+                  ) : (
+                    <FaEye size={18} className="top-2 relative" />
+                  )}
                 </button>
               </div>
             </div>
@@ -74,19 +90,24 @@ const Login = () => {
               <Link
                 to="/resetPassword"
                 // onClick={() => setForgotPassword(true)}
-                className="text-sm text-teal-700 hover:underline"
+                className="text-sm text-teal-700 hover:underline hover:text-teal-950"
               >
                 Forgot Password?
               </Link>
-              <a href="/signup" className="text-sm text-teal-700 hover:underline">
-                Don't have an account? Sign Up
+              <a
+                href="/signup"
+                className="text-sm text-teal-700 "
+              >
+                Don't have an account? <span className="hover:underline hover:text-teal-950"> Sign Up</span>
               </a>
             </div>
           </form>
         ) : (
           <form onSubmit={handleForgotPassword}>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-600">Enter your email for password reset</label>
+              <label htmlFor="email" className="block text-gray-600">
+                Enter your email for password reset
+              </label>
               <div className="relative">
                 <FaEnvelope className="absolute left-3 top-3 text-teal-700" />
                 <input
