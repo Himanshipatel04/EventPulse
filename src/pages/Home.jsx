@@ -91,11 +91,21 @@ const Home = () => {
                 </h3>
                 <p className="text-gray-600 mb-4">{event.date}</p>
                 <p className="text-gray-700 mb-4">{event.description}</p>
-                <Link to={`/register/${event.id}/${event.title}`}>
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg text-sm transition">
-                    Register for Event
-                  </button>
-                </Link>
+                <div className="flex gap-2 w-full">
+                  <Link
+                    to={`/register/${event.id}/${event.title}`}
+                    className="w-1/2"
+                  >
+                    <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                      Register for Event
+                    </button>
+                  </Link>
+                  <Link to={`/register/${event.id}`} className="w-1/2">
+                    <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                      View Event Details
+                    </button>
+                  </Link>
+                </div>
               </div>
             ))}
           </Slider>
@@ -103,14 +113,14 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-teal-100">
+      <section className="py-16 bg-teal-50">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">
             Key Features
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <h3 className="text-xl font-semibold text-teal-700 mb-4">
+            <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Seamless Planning
               </h3>
               <p className="text-gray-700">
@@ -118,8 +128,8 @@ const Home = () => {
                 platform.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <h3 className="text-xl font-semibold text-teal-700 mb-4">
+            <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Real-Time Collaboration
               </h3>
               <p className="text-gray-700">
@@ -127,8 +137,8 @@ const Home = () => {
                 real-time.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <h3 className="text-xl font-semibold text-teal-700 mb-4">
+            <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Analytics & Reporting
               </h3>
               <p className="text-gray-700">
@@ -141,9 +151,9 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-teal-700 text-white py-16">
+      <section className="bg-teal-100 text-white py-16">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-8">
+          <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
             What Our Users Say
           </h2>
           <div className="flex justify-center space-x-6">

@@ -27,9 +27,9 @@ const Header = () => {
         </nav>
 
         {/* Call to Action Button */}
-        <Link to="/getStarted">
+        <Link to="/signup">
           <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition">
-            Get Started
+            SignUp
           </button>
         </Link>
       </div>

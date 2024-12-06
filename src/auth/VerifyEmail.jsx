@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 const VerifyEmail = () => {
+  const navigate = useNavigate()
   const [status, setStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [searchParams] = useSearchParams();
@@ -11,11 +12,14 @@ const VerifyEmail = () => {
   const handleVerifyClick = async () => {
     if (token) {
       try {
+        console.log(token)
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/user/verifyEmail`,
+          `http://localhost:4000/api/users/verifyEmail`,
           { token }
         );
+        console.log(response);
         setStatus(response.data.message);
+        Navigate("/login")
       } catch (error) {
         setErrorMessage(
           error.response ? error.response.data.message : "Something went wrong"
