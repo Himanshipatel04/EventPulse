@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams to access URL params
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // Import useParams to access URL params
 
 const RegisterForEvent = () => {
   // Get event name and event ID from URL params
@@ -7,8 +8,8 @@ const RegisterForEvent = () => {
 
   // State for the form
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    name: "",
+    email: "",
     event: decodeURIComponent(eventTitle), // Decode URL component for the event name
   });
 
@@ -22,10 +23,20 @@ const RegisterForEvent = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // In a real-world app, you'd send the form data to an API here
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/events/registerInEvent",
+        formData,
+        { withCredentials: true }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log("Error while registering in event", error);
+    }
   };
 
   useEffect(() => {
@@ -38,19 +49,24 @@ const RegisterForEvent = () => {
 
   return (
     <div className="max-w-4xl  p-8 bg-white rounded-lg shadow-lg my-20 md:my-32 mx-4 md:mx-auto outline outline-2 outline-teal-500">
-      <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">Register for Event</h2>
+      <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">
+        Register for Event
+      </h2>
 
       <form onSubmit={handleSubmit}>
         {/* Name Field */}
         <div className="mb-4">
-          <label htmlFor="name" className="block text-teal-700 font-semibold mb-2">
+          <label
+            htmlFor="name"
+            className="block text-teal-700 font-semibold mb-2"
+          >
             Full Name
           </label>
           <input
             type="text"
             id="name"
             name="name"
-            placeholder='Enter your full name....'
+            placeholder="Enter your full name...."
             value={formData.name}
             onChange={handleChange}
             className="w-full px-4 py-2 outline outline-1 border-none rounded-lg"
@@ -60,14 +76,17 @@ const RegisterForEvent = () => {
 
         {/* Email Field */}
         <div className="mb-4">
-          <label htmlFor="email" className="block text-teal-700 font-semibold mb-2">
+          <label
+            htmlFor="email"
+            className="block text-teal-700 font-semibold mb-2"
+          >
             Email Address
           </label>
           <input
             type="email"
             id="email"
             name="email"
-            placeholder='Enter your email address....'
+            placeholder="Enter your email address...."
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-2 outline outline-1 border-none rounded-lg"
@@ -77,7 +96,10 @@ const RegisterForEvent = () => {
 
         {/* Event Field - Unchangeable */}
         <div className="mb-4">
-          <label htmlFor="event" className="block text-teal-700 font-semibold mb-2">
+          <label
+            htmlFor="event"
+            className="block text-teal-700 font-semibold mb-2"
+          >
             Event
           </label>
           <input
