@@ -19,7 +19,7 @@ const VerifyEmail = () => {
         );
         console.log(response);
         setStatus(response.data.message);
-        Navigate("/login")
+        navigate("/login")
       } catch (error) {
         setErrorMessage(
           error.response ? error.response.data.message : "Something went wrong"

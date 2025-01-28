@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
 
 // Create UserContext to share user data
 const UserContext = createContext();
@@ -12,28 +11,37 @@ export const useUser = () => {
 // UserContextProvider component to manage the user state and fetch the user
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
- 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/users/getUser",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-          }
-        );
 
-        setUser(response.data.data);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      } 
+  useEffect(() => {
+    const fetchUser = () => {
+      try {
+        const userFromLocalStorage = localStorage.getItem("user");
+        if (userFromLocalStorage) {
+          const parsedData = JSON.parse(userFromLocalStorage);
+
+          // Check if 72 hours have passed since login
+          const now = Date.now();
+          const timeDifference = now - parsedData.timestamp;
+
+          if (timeDifference > 72 * 60 * 60 * 1000) {
+            // Expired: Remove user data
+            localStorage.removeItem("user");
+            console.log("User data has expired and been removed.");
+            setUser(null); // Ensure state is cleared
+          } else {
+            // Valid: Set user state
+            setUser(parsedData.user);
+          }
+        } else {
+          console.log("No user found in localStorage.");
+        }
+      } catch (error) {
+        console.log("Error while fetching user from localStorage!", error);
+      }
     };
 
-    fetchUser();
-  }, []); // Run only on component mount
+    fetchUser(); // Call the function once on component mount
+  }, []); // Empty dependency array ensures it only runs once
 
   // Provide the user state and setter function to the children
   return (

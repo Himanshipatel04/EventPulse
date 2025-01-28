@@ -4,7 +4,7 @@ const TermsOfService = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-teal-700 text-white text-center py-24">
+      <section className="bg-teal-700 text-white text-center py-40">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-bold leading-tight mb-4">Terms of Service</h1>
           <p className="text-xl mb-6">

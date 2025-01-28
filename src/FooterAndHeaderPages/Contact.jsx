@@ -4,7 +4,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className=" text-teal-700 text-center py-10">
+      <header className=" text-teal-700 text-center py-40">
         <h1 className="text-4xl font-bold">GET IN TOUCH</h1>
       </header>
 

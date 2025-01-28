@@ -4,7 +4,7 @@ const AboutUsPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
-      <header className="bg-teal-700 text-white text-center py-10">
+      <header className="bg-teal-700 text-white text-center py-40">
         <h1 className="text-4xl font-bold">About Us</h1>
         <p className="text-lg mt-2">Learn more about our mission, team, and what we stand for.</p>
       </header>

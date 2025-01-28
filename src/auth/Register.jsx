@@ -2,6 +2,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toast";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,13 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     console.log("Signing up with", { email, password, role });
+    if (password.length < 6) {
+      toast("Password must be of atleast 6 characters!", {
+        backgroundColor: "#FF0000",
+        color: "#ffffff",
+        type: "error",
+      });
+    }
     try {
       // console.log("hee;p");
       const response = await axios.post(
@@ -18,18 +26,28 @@ const Signup = () => {
         { email, password, role }
       );
       console.log(response);
+      toast("A link is sent to you at your email. Kindly verify yourself!",{
+        backgroundColor: "#ffffff",
+        color: "#000000",
+        type: "success",
+      })
     } catch (error) {
+      toast(error.response.data.message ?? "Error while registering!",{
+        backgroundColor: "#FF0000",
+        color: "#ffffff",
+        type: "error",
+      })
       console.log("Error while registering user", error);
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-teal-50">
+    <div className="flex items-center justify-center h-screen bg-teal-50 pt-20">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl outline outline-2 outline-teal-500">
         <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">
           Event Pulse
         </h2>
-        <form >
+        <form>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-600">
               Email
@@ -100,6 +118,7 @@ const Signup = () => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" />
     </div>
   );
 };

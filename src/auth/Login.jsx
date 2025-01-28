@@ -2,24 +2,53 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Font Awesome Icons
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     // Add your login logic here
     console.log("Logging in with", { email, password });
+
     try {
+      if (password.length < 6) {
+        toast("Password must have 6 characters!", {
+          backgroundColor: "#FF0000",
+          color: "#ffffff",
+          type: "error",
+        });
+      }
       const response = await axios.post(
         "http://localhost:4000/api/users/login",
         { email, password }
       );
-      console.log(response,"..");
+      console.log(response.data.data, "..");
+      const userWithExpiry = {
+        user: response.data.data, // The actual user data
+        timestamp: Date.now(), // Current time in milliseconds
+      };
+
+      localStorage.setItem("user", JSON.stringify(userWithExpiry));
+      toast("Logged in successfully!", {
+        type: "success",
+        backgroundColor: "#ffffff",
+        color: "#000000",
+      });
+      // window.location.reload();
+      navigate("/");
     } catch (error) {
+      toast(error.response.data.message ?? "Error while logging in!", {
+        type: "error",
+        backgroundColor: "#FF0000",
+        color: "#ffffff",
+      });
       console.log("Error while logging in!", error);
     }
   };
@@ -119,6 +148,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" />
     </div>
   );
 };

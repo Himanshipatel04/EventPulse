@@ -1,13 +1,18 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams to access URL params
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams to access URL params
+import { useUser } from "../context/UserContext";
+import { toast, ToastContainer } from "react-toast";
 
 const RegisterForEvent = () => {
   // Get event name and event ID from URL params
   const { eventId, eventTitle } = useParams();
-
+ const { user } = useUser();
+ const navigate = useNavigate()
+ 
   // State for the form
   const [formData, setFormData] = useState({
+    id:eventId,
     name: "",
     email: "",
     event: decodeURIComponent(eventTitle), // Decode URL component for the event name
@@ -27,14 +32,31 @@ const RegisterForEvent = () => {
     e.preventDefault();
     // In a real-world app, you'd send the form data to an API here
     console.log("Form submitted:", formData);
+    if (!user){
+      toast("Login first!",{
+        backgroundColor: "#FF0000",
+        color: "#ffffff",
+        type: "error",
+      })
+      navigate("/login")
+    }
     try {
       const response = await axios.post(
         "http://localhost:4000/api/events/registerInEvent",
-        formData,
-        { withCredentials: true }
+        formData
       );
       console.log(response);
+      toast("Registered in event successfully!",{
+        backgroundColor: "#ffffff",
+        color: "#000000",
+        type: "success",
+      })
     } catch (error) {
+      toast(error.response.data?.message ?? "Can't register now. Try again later!",{
+        backgroundColor: "#FF0000",
+        color: "#ffffff",
+        type: "error",
+      })
       console.log("Error while registering in event", error);
     }
   };
@@ -48,7 +70,7 @@ const RegisterForEvent = () => {
   }, [eventTitle]); // This will trigger whenever the event name changes
 
   return (
-    <div className="max-w-4xl  p-8 bg-white rounded-lg shadow-lg my-20 md:my-32 mx-4 md:mx-auto outline outline-2 outline-teal-500">
+    <div className="max-w-4xl p-8 bg-white rounded-lg shadow-lg my-20 md:mt-40 md:mb-36 mx-4 md:mx-auto outline outline-2 outline-teal-500">
       <h2 className="text-3xl font-bold text-center text-teal-700 mb-8">
         Register for Event
       </h2>
@@ -122,6 +144,7 @@ const RegisterForEvent = () => {
           </button>
         </div>
       </form>
+      <ToastContainer position="top-right"/>
     </div>
   );
 };

@@ -4,7 +4,7 @@ const PoliciesPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Section */}
-      <header className="bg-teal-700 text-white text-center py-10">
+      <header className="bg-teal-700 text-white text-center py-40">
         <h1 className="text-4xl font-bold">Event Management Policies</h1>
       </header>
 
