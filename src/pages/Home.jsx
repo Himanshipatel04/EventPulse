@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { useUser } from "../context/UserContext";
 
 const Home = () => {
   const carouselSettings = {
@@ -62,6 +63,8 @@ const Home = () => {
     },
   ];
 
+  const { user } = useUser();
+
   return (
     <div>
       {/* Hero Section */}
@@ -103,6 +106,36 @@ const Home = () => {
           </Link>
         </div>
       </section>
+
+      {/* Create Event Section */} 
+      {user?.role === "Organizer" && (
+        <section className="py-16 text-teal-700 bg-gray-100">
+          <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
+            <h2 className="text-3xl font-bold mb-6">
+              Ready to Create an Event That Excites?
+            </h2>
+            <p className="text-lg mb-6 max-w-2xl mx-auto">
+              Whether you're hosting a small meetup, a grand conference, or a
+              unique event, let your ideas shine! Get started by creating your
+              event and inspire the world.
+            </p>
+            <div className="relative mb-8">
+              <img
+                src="https://canapii.com/wp-content/uploads/2023/03/Blog-banner-5-C-of-event-management.png" // Replace with your own image
+                alt="Event Creation"
+                className="rounded-lg object-cover w-full h-72"
+              />
+              <div className="absolute inset-0 bg-black opacity-25 rounded-lg"></div>
+            </div>
+            <Link
+              className="bg-teal-500 text-white py-3 px-8 rounded-lg font-semibold hover:bg-teal-700 transition duration-300 shadow-lg"
+              to="/createEvent"
+            >
+              Let's Create Your Event!
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Upcoming Events Carousel */}
       <section className="py-16 bg-teal-100">
@@ -156,9 +189,9 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" // Real URL
+                src="https://leadershipinfo.home.blog/wp-content/uploads/2019/02/group-business-people-meeting-planning-41699625.jpg" // Real URL
                 alt="Seamless Planning"
-                className="w-16 h-16 mx-auto mb-4"
+                className="w-32 h-32 mx-auto mb-4 rounded-full"
               />
               <h3 className="text-xl font-semibold text-white mb-4">
                 Seamless Planning
@@ -170,9 +203,9 @@ const Home = () => {
             </div>
             <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="https://images.unsplash.com/photo-1506970033037-8e0c9d4f7361" // Real URL
+                src="https://imageio.forbes.com/specials-images/imageserve/65fb34a45e253140736dc172/People-searching-for-creative-solutions--Teamwork-business-concept--Modern-vector/960x0.jpg?format=jpg&width=960" // Real URL
                 alt="Real-Time Collaboration"
-                className="w-16 h-16 mx-auto mb-4"
+                className="w-32 h-32 mx-auto mb-4 rounded-full object-cover"
               />
               <h3 className="text-xl font-semibold text-white mb-4">
                 Real-Time Collaboration
@@ -184,9 +217,9 @@ const Home = () => {
             </div>
             <div className="bg-teal-600 p-6 rounded-lg shadow-lg text-center">
               <img
-                src="https://images.unsplash.com/photo-1516741537983-0fd37cb42192" // Real URL
+                src="https://www.soundandcommunications.com/wp-content/uploads/2019/11/Data-Ana.jpg" // Real URL
                 alt="Analytics & Reporting"
-                className="w-16 h-16 mx-auto mb-4"
+                className="w-32 h-32 mx-auto mb-4 rounded-full object-cover"
               />
               <h3 className="text-xl font-semibold text-white mb-4">
                 Analytics & Reporting

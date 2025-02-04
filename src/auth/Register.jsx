@@ -20,23 +20,22 @@ const Signup = () => {
       });
     }
     try {
-      // console.log("hee;p");
       const response = await axios.post(
         "http://localhost:4000/api/users/register",
         { email, password, role }
       );
       console.log(response);
-      toast("A link is sent to you at your email. Kindly verify yourself!",{
+      toast("A link is sent to you at your email. Kindly verify yourself!", {
         backgroundColor: "#ffffff",
         color: "#000000",
         type: "success",
-      })
+      });
     } catch (error) {
-      toast(error.response.data.message ?? "Error while registering!",{
+      toast(error.response.data.message ?? "Error while registering!", {
         backgroundColor: "#FF0000",
         color: "#ffffff",
         type: "error",
-      })
+      });
       console.log("Error while registering user", error);
     }
   };
@@ -118,7 +117,7 @@ const Signup = () => {
           </div>
         </form>
       </div>
-      <ToastContainer position="top-right" />
+      <ToastContainer position="top-right" delay={2000} />
     </div>
   );
 };

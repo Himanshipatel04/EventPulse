@@ -26,7 +26,11 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     window.location.reload();
-    toast("Logged out successfully!", { type: "success" , backgroundColor: '#ffffff',color: '#000000'});           
+    toast("Logged out successfully!", {
+      type: "success",
+      backgroundColor: "#ffffff",
+      color: "#000000",
+    });
   };
 
   return (
@@ -37,7 +41,7 @@ const Header = () => {
           : "backdrop-blur-sm bg-teal-700/50"
       } text-white shadow-md z-50`}
     >
-      <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
         <Link to="/">
           <h1 className="text-3xl font-bold cursor-pointer">EventPulse</h1>
@@ -67,16 +71,33 @@ const Header = () => {
             </button>
           </Link>
         ) : (
-         <div> <button
-         onClick={handleLogout}
-         className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition"
-       >
-         Logout
-       </button>
-       <p>{user.role === "Organizer" ?? "See Profile"}</p></div>
+          <div className="flex">
+            <button
+              onClick={handleLogout}
+              className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition"
+            >
+              Logout
+            </button>
+            <Link
+              to={
+                user.role === "Organizer"
+                  ? "/organizer-profile"
+                  : user.role === "Attendee"
+                  ? "/attendee-dashboard"
+                  : "/admin-dashboard"
+              }
+              className="bg-teal-500 ml-4 hover:bg-teal-600 text-white py-2 px-4 rounded-lg transition"
+            >
+              {user.role === "Organizer"
+                ? "View Profile"
+                : user.role === "Attendee"
+                ? "Dashboard"
+                : "Admin Dashboard"}
+            </Link>
+          </div>
         )}
       </div>
-      <ToastContainer position="top-right"/>
+      <ToastContainer position="top-right" />
     </header>
   );
 };

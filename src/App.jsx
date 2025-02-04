@@ -16,6 +16,10 @@ import Login from "./auth/Login";
 import Signup from "./auth/Register";
 import EventDetails from "./components/EventDetails";
 import RegisterForEvent from "./components/RegisterForEvent";
+import OrganizerProfile from "./pages/Organizer/OrganizerProfile";
+import CreateEvent from "./pages/Organizer/CreateEvent";
+import AttendeeProfile from "./pages/Attendee/AttendeeProfile";
+import AdminProfile from "./pages/Admin/AdminProfile";
 
 const App = () => {
   return (
@@ -34,11 +38,15 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/getStarted" element={<GetStarted />} />
+        <Route path="/createEvent" element={<CreateEvent />} />
         <Route
           path="/register/:eventId/:eventTitle"
           element={<RegisterForEvent />}
         />
         <Route path="/register/:eventId" element={<EventDetails />} />
+        <Route path="/organizer-profile" element={<OrganizerProfile />} />
+        <Route path="/attendee-dashboard" element={<AttendeeProfile />} />
+        <Route path="/admin-dashboard" element={<AdminProfile />} />
       </Routes>
       <Footer />
     </Router>
