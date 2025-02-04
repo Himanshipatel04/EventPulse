@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Font Awesome Icons
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +18,7 @@ const Login = () => {
 
     try {
       if (password.length < 6) {
-        toast("Password must have 6 characters!", {
-          backgroundColor: "#FF0000",
-          color: "#ffffff",
-          type: "error",
-        });
+        alert("Password should be at least 6 characters long.");
       }
       const response = await axios.post(
         "http://localhost:4000/api/users/login",
@@ -36,19 +31,13 @@ const Login = () => {
       };
 
       localStorage.setItem("user", JSON.stringify(userWithExpiry));
-      toast("Logged in successfully!", {
-        type: "success",
-        backgroundColor: "#ffffff",
-        color: "#000000",
-      });
-      // window.location.reload();
-      navigate("/");
+
+      window.location.reload();
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
-      toast(error.response.data.message ?? "Error while logging in!", {
-        type: "error",
-        backgroundColor: "#FF0000",
-        color: "#ffffff",
-      });
       console.log("Error while logging in!", error);
     }
   };
@@ -87,7 +76,7 @@ const Login = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600"
                 required
                 placeholder="Enter your email"
               />
@@ -107,7 +96,7 @@ const Login = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-10 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                className="w-full pl-10 pr-10 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600"
                 required
                 placeholder="Enter your password"
               />
@@ -148,7 +137,6 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <ToastContainer position="top-right" />
     </div>
   );
 };

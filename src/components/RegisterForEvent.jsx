@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // Import useParams to access URL params
 import { useUser } from "../context/UserContext";
-import { toast, ToastContainer } from "react-toast";
 
 const RegisterForEvent = () => {
   // Get event name and event ID from URL params
@@ -33,11 +32,7 @@ const RegisterForEvent = () => {
     // In a real-world app, you'd send the form data to an API here
     console.log("Form submitted:", formData);
     if (!user){
-      toast("Login first!",{
-        backgroundColor: "#FF0000",
-        color: "#ffffff",
-        type: "error",
-      })
+      alert("Login first!")
       navigate("/login")
     }
     try {
@@ -46,17 +41,9 @@ const RegisterForEvent = () => {
         formData
       );
       console.log(response);
-      toast("Registered in event successfully!",{
-        backgroundColor: "#ffffff",
-        color: "#000000",
-        type: "success",
-      })
+      alert("Registered in event successfully!")
     } catch (error) {
-      toast(error.response.data?.message ?? "Can't register now. Try again later!",{
-        backgroundColor: "#FF0000",
-        color: "#ffffff",
-        type: "error",
-      })
+      alert(error.response.data?.message ?? "Can't register now. Try again later!")
       console.log("Error while registering in event", error);
     }
   };
@@ -144,7 +131,6 @@ const RegisterForEvent = () => {
           </button>
         </div>
       </form>
-      <ToastContainer position="top-right"/>
     </div>
   );
 };

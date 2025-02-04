@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
   const { user } = useUser();
+  const navigate = useNavigate()
 
   if (!user) {
     return (
@@ -48,8 +50,12 @@ const CreateEvent = () => {
     try {
         const response = await axios.post("http://localhost:4000/api/events/createEvent", formData);
         console.log(response.data); 
+        navigate("/organizerProfile")
         alert("Event created successfully")                        
-    } catch (error) {}
+    } catch (error) {
+        console.log("Error creating event", error);
+        alert("Error creating event")           
+    }
   };
 
   return (
@@ -98,8 +104,9 @@ const CreateEvent = () => {
               value={formData.description}
               onChange={handleChange}
               required
-              rows="4"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
+              rows="2"
+              maxLength={200}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
             ></textarea>
           </div>
 

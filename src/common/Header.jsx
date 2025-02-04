@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
 import { useUser } from "../context/UserContext";
-import { toast, ToastContainer } from "react-toast";
 
 const Header = () => {
   const { user } = useUser();
@@ -26,11 +25,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     window.location.reload();
-    toast("Logged out successfully!", {
-      type: "success",
-      backgroundColor: "#ffffff",
-      color: "#000000",
-    });
+ 
   };
 
   return (
@@ -97,7 +92,6 @@ const Header = () => {
           </div>
         )}
       </div>
-      <ToastContainer position="top-right" />
     </header>
   );
 };

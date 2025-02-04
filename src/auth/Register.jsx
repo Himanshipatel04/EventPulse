@@ -2,7 +2,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toast";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,11 +12,7 @@ const Signup = () => {
     e.preventDefault();
     console.log("Signing up with", { email, password, role });
     if (password.length < 6) {
-      toast("Password must be of atleast 6 characters!", {
-        backgroundColor: "#FF0000",
-        color: "#ffffff",
-        type: "error",
-      });
+      alert("Password must be of atleast 6 characters!");
     }
     try {
       const response = await axios.post(
@@ -25,17 +20,9 @@ const Signup = () => {
         { email, password, role }
       );
       console.log(response);
-      toast("A link is sent to you at your email. Kindly verify yourself!", {
-        backgroundColor: "#ffffff",
-        color: "#000000",
-        type: "success",
-      });
+     
     } catch (error) {
-      toast(error.response.data.message ?? "Error while registering!", {
-        backgroundColor: "#FF0000",
-        color: "#ffffff",
-        type: "error",
-      });
+      
       console.log("Error while registering user", error);
     }
   };
@@ -61,7 +48,7 @@ const Signup = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600"
                 required
                 placeholder="Enter your email"
               />
@@ -81,7 +68,7 @@ const Signup = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                className="w-full pl-10 pr-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600"
                 required
                 placeholder="Enter your password"
               />
@@ -95,7 +82,7 @@ const Signup = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600"
             >
               <option value="Attendee">Attendee</option>
               <option value="Organizer">Organizer</option>
@@ -117,7 +104,6 @@ const Signup = () => {
           </div>
         </form>
       </div>
-      <ToastContainer position="top-right" delay={2000} />
     </div>
   );
 };
