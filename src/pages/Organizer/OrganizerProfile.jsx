@@ -21,6 +21,8 @@ const OrganizerProfile = () => {
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [viewParticipants, setViewParticipants] = useState(false);
+  const [participants, setParticipants] = useState([]);
 
   const fetchEvents = async () => {
     try {
@@ -69,6 +71,18 @@ const OrganizerProfile = () => {
     }));
   };
 
+  const getParticipantsForEvent = async (eventId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+      );
+      console.log(response.data.data.participants);
+      setParticipants(response.data.data.participants);
+    } catch (error) {
+      console.log("Error fetching participants", error);
+    }
+  };
+
   useEffect(() => {
     if (user?._id) {
       fetchEvents();
@@ -80,7 +94,13 @@ const OrganizerProfile = () => {
       <div
         className={`max-w-7xl text-gray-900 p-6 ${
           isModalOpen ? "backdrop-blur-lg " : ""
-        }`}
+        } 
+        ${
+          viewParticipants
+            ? "-translate-x-4 transition-all duration-500"
+            : "translate-x-0 transition-all duration-500"
+        }          
+        `}
       >
         {/* Organizer Profile Info */}
         <div className="text-center">
@@ -141,7 +161,13 @@ const OrganizerProfile = () => {
                 </p>
 
                 {/* Manage Button */}
-                <button className="absolute bottom-14 w-[90%] bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600">
+                <button
+                  onClick={() => {
+                    setViewParticipants(true);
+                    getParticipantsForEvent(event._id);
+                  }}
+                  className="absolute bottom-14 w-[90%] bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600"
+                >
                   View Participants
                 </button>
                 <button
@@ -240,6 +266,40 @@ const OrganizerProfile = () => {
           </div>
         </div>
       </div>
+
+      <div
+  className={`transform min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
+    outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
+    transition-all duration-500 ease-in-out
+    ${
+      viewParticipants
+        ? "block translate-y-0 scale-100 visible"
+        : "hidden translate-y-5 scale-95 invisible"
+    }
+  `}
+>
+  <div className="flex items-center justify-between">
+    <h2 className="text-lg font-semibold text-teal-700">
+      {`Participants (${participants?.length})`}
+    </h2>
+    <button
+      onClick={() => setViewParticipants(false)}
+      className="bg-red-500 flex items-center justify-center rounded-full h-6 w-6 text-center"
+    >
+      x
+    </button>
+  </div>
+  {participants?.length ? (
+    participants.map((value, index) => (
+      <p className="text-gray-600 pb-1 mt-2 border-b border-gray-200" key={index}>
+        {value.email}
+      </p>
+    ))
+  ) : (
+    <p>No participants found!</p>
+  )}
+</div>
+
     </div>
   );
 };

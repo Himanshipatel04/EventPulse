@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
 import { useUser } from "../context/UserContext";
+import { IoMenu } from "react-icons/io5";
 
 const Header = () => {
   const { user } = useUser();
   console.log(user);
   const [visible, setVisible] = useState(false);
-
+  const [showMenu, setShowMenu] = useState(false);
+  console.log(showMenu);
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -25,7 +27,6 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     window.location.reload();
- 
   };
 
   return (
@@ -43,7 +44,7 @@ const Header = () => {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="space-x-6">
+        <nav className="hidden md:block space-x-6">
           <Link to="/" className="hover:text-teal-300 transition">
             Home
           </Link>
@@ -60,16 +61,24 @@ const Header = () => {
 
         {/* Call to Action Button */}
         {!user ? (
-          <Link to="/signup">
-            <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition">
-              SignUp
-            </button>
-          </Link>
+          <div className="flex items-center justify-center space-x-2">
+            <Link to="/signup">
+              <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition">
+                SignUp
+              </button>
+            </Link>
+            <div className="block md:hidden">
+              <IoMenu onClick={() => setShowMenu(true)} size={32} />
+            </div>
+          </div>
         ) : (
           <div className="flex">
+            <div className="block md:hidden">
+              <IoMenu onClick={() => setShowMenu(true)} size={32} />
+            </div>
             <button
               onClick={handleLogout}
-              className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition"
+              className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 hidden md:block rounded-lg transition"
             >
               Logout
             </button>
@@ -81,7 +90,7 @@ const Header = () => {
                   ? "/attendee-dashboard"
                   : "/admin-dashboard"
               }
-              className="bg-teal-500 ml-4 hover:bg-teal-600 text-white py-2 px-4 rounded-lg transition"
+              className="hidden md:block bg-teal-500 ml-4 hover:bg-teal-600 text-white py-2 px-4 rounded-lg transition"
             >
               {user.role === "Organizer"
                 ? "View Profile"
@@ -91,6 +100,90 @@ const Header = () => {
             </Link>
           </div>
         )}
+      </div>
+
+      <div
+        className={`bg-gray-50 md:hidden w-52 h-screen fixed top-0 right-0 z-50 shadow-lg
+    transition-all duration-500 ease-in-out transform
+    ${
+      showMenu
+        ? "translate-x-0 opacity-100 visible"
+        : "translate-x-full opacity-0 invisible"
+    }
+  `}
+      >
+        {/* Close Button */}
+        <button
+          onClick={() => setShowMenu(false)}
+          className="absolute top-4 right-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center"
+        >
+          ✕
+        </button>
+        {/* Menu Content */}
+        <div className="flex flex-col mt-16 space-y-5 px-4 py-10">
+          <Link
+            onClick={() => {
+              setShowMenu(false);
+            }}
+            to="/"
+            className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+          >
+            Home
+          </Link>
+          <Link
+            onClick={() => {
+              setShowMenu(false);
+            }}
+            to="/about"
+            className="text-white bg-teal-500 hover:bg-teal-6000 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+          >
+            About
+          </Link>
+          <Link
+            to="/services"
+            onClick={() => {
+              setShowMenu(false);
+            }}
+            className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+          >
+            Services
+          </Link>
+          <Link
+            onClick={() => {
+              setShowMenu(false);
+            }}
+            to="/contact"
+            className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+          >
+            Contact
+          </Link>
+          {user ? (
+            <div className="flex flex-col space-y-5">
+              <Link
+                to={
+                  user.role === "Organizer"
+                    ? "/organizer-profile"
+                    : user.role === "Attendee"
+                    ? "/attendee-dashboard"
+                    : "/admin-dashboard"
+                }
+                className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+              >
+                {user.role === "Organizer"
+                  ? "View Profile"
+                  : user.role === "Attendee"
+                  ? "Dashboard"
+                  : "Admin Dashboard"}
+              </Link>
+              <Link
+                onClick={handleLogout}
+                className="text-white bg-red-500 hover:bg-red-600 transition p-2 outline outline-1 rounded-md text-center"
+              >
+                Logout
+              </Link>
+            </div>
+          ) : null}
+        </div>
       </div>
     </header>
   );

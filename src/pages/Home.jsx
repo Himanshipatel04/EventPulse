@@ -255,7 +255,7 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
             What Our Users Say
           </h2>
-          <div className="flex justify-center space-x-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3"> 
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs text-center">
               <p className="text-gray-700 italic">
                 "Event Pulse made managing our conference so easy. The tools
