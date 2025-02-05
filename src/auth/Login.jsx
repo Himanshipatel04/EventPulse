@@ -31,12 +31,11 @@ const Login = () => {
       };
 
       localStorage.setItem("user", JSON.stringify(userWithExpiry));
-
-      window.location.reload();
+      navigate("/");
 
       setTimeout(() => {
-        navigate("/");
-      }, 2000);
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.log("Error while logging in!", error);
     }

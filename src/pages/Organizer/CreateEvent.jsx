@@ -23,7 +23,9 @@ const CreateEvent = () => {
     title: "",
     description: "",
     date: "",
+    time:"",
     location: "",
+    organizerName: "",
     organizerId: user._id,
     status: "pending",
     ticketPrices: "",
@@ -50,7 +52,7 @@ const CreateEvent = () => {
     try {
         const response = await axios.post("http://localhost:4000/api/events/createEvent", formData);
         console.log(response.data); 
-        navigate("/organizerProfile")
+        navigate("/organizer-profile")
         alert("Event created successfully")                        
     } catch (error) {
         console.log("Error creating event", error);
@@ -109,6 +111,24 @@ const CreateEvent = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
             ></textarea>
           </div>
+          <div className="mb-6">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Event Organizer
+            </label>
+            <input
+              id="organizerName"
+              name="organizerName"
+              value={formData.organizerName}
+              onChange={handleChange}
+              required
+              rows="2"
+              maxLength={200}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
+            ></input>
+          </div>
 
           {/* Event Date */}
           <div className="mb-6">
@@ -123,6 +143,25 @@ const CreateEvent = () => {
               id="date"
               name="date"
               value={formData.date}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
+            />
+          </div>
+
+          {/* Event Time */}      
+          <div className="mb-6">
+            <label
+              htmlFor="date"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Event Time (24-hour format e.g. 14:30 - 16:30)   
+            </label>
+            <input
+              type="text"
+              id="time"
+              name="time"
+              value={formData.time}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"

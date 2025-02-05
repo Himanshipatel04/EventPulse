@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import { useUser } from "../context/UserContext";
+import { Calendar, MapPin, Users, BadgeCheck } from "lucide-react";
 import axios from "axios";
 
 const Home = () => {
@@ -51,31 +52,22 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section
-        className="relative bg-cover bg-center text-white text-center py-40"
-        style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
-        }}
-      >
-        {/* Blurred background image */}
+      <section className="relative text-white text-center py-44 md:py-36 overflow-hidden">
+        {/* Blurred Background */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 bg-cover bg-center blur-sm "
           style={{
-            backgroundImage: "inherit",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(5px)", // Stronger blur effect
-            zIndex: "-1",
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
           }}
         ></div>
 
-        {/* Overlay for better text contrast */}
-        <div className="absolute inset-0 bg-black opacity-30"></div>
+        {/* Dark Overlay for Contrast */}
+        <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        {/* Text content */}
+        {/* Text Content - Ensures Clarity */}
         <div className="relative z-10">
-          <h1 className="text-5xl font-bold leading-tight mb-4">
+          <h1 className="text-6xl font-bold leading-tight mb-4">
             Welcome to Event Pulse
           </h1>
           <p className="text-xl mb-6">
@@ -129,68 +121,64 @@ const Home = () => {
           <Slider {...carouselSettings}>
             {upcomingEvents.map((event) => (
               <div
-              key={event._id}
-              className="p-6 bg-white h-[350px] relative rounded-lg text-center flex flex-col justify-between overflow-hidden"
-            >
-              {/* Event Title */}
-              <h3 className="text-xl font-bold text-teal-700 mb-2 text-ellipsis overflow-hidden whitespace-normal">
-                {event.title}
-              </h3>
-            
-              {/* Event Date */}
-              <p className="text-gray-600 mb-2 font-semibold">
-                {new Date(event.date).toLocaleDateString("en-IN", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            
-              {/* Event Location */}
-              <p className="text-gray-700 mb-2 font-semibold">{event.location}</p>
-            
-              {/* Event Description */}
-              <p className="text-gray-700 mb-4 text-sm">{event.description}</p>
-            
-              {/* Event Ticket Price */}
-              <p className="text-sm text-gray-700 mb-2">
-                💸 Ticket Price: ₹{event.ticketPrices} /-
-              </p>
-            
-              {/* Event Status */}
-              <p
-                className={`text-sm font-semibold mb-2 ${
-                  event.status === "approved"
-                    ? "text-green-600"
-                    : event.status === "pending"
-                    ? "text-yellow-600"
-                    : "text-red-600"
-                }`}
+                key={event._id}
+                className="p-4 bg-white h-[350px] rounded-lg text-center  "
               >
-                Status: {event.status}
-              </p>
-            
-              {/* Event Participants */}
-              <p className="text-sm text-gray-700 mb-4">
-                👥 Participants: {event.participants.length}
-              </p>
-            
-              {/* Action Buttons */}
-              <div className="absolute bottom-3 flex gap-2 w-[87%] mx-auto">
-                <Link to={`/register/${event._id}/${event.title}`} className="w-1/2">
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
-                    Register for Event
-                  </button>
-                </Link>
-                <Link to={`/register/${event._id}`} className="w-1/2">
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
-                    View Event Details
-                  </button>
-                </Link>
+                {/* Event Title */}
+                <div className="flex flex-col justify-end h-full">
+                  <div className="">
+                    <h3 className="text-xl font-bold text-teal-700 mb-2 text-ellipsis overflow-hidden whitespace-normal">
+                      {event.title}
+                    </h3>
+
+                    {/* Event Date */}
+                    <p className="text-gray-600 mb-2 font-semibold">
+                      {new Date(event.date).toLocaleDateString("en-IN", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}{" "}
+                      {"(" + (event.time ?? "Time TBD") + ")"}
+                    </p>
+
+                    {/* Event Location */}
+                    <p className="text-gray-700 mb-2 font-semibold">
+                      {event.location}
+                    </p>
+
+                    <p className="text-md text-gray-700 mb-2">
+                      Organized By: {event.organizerName}
+                    </p>
+
+                    {/* Event Description */}
+                    <p className="text-gray-700 mb-4 text-sm">
+                      {event.description}
+                    </p>
+
+                    {/* Event Participants */}
+                    <p className="text-sm text-gray-700 mb-4">
+                      👥 Participants: {event.participants.length}
+                    </p>
+                  </div>
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 mt-auto ">
+                    <Link
+                      to={`/register/${event._id}/${event.title}`}
+                      className="w-1/2"
+                    >
+                      <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                        Register for Event
+                      </button>
+                    </Link>
+                    <Link to={`/register/${event._id}`} className="w-1/2">
+                      <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                        View Event Details
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-            
             ))}
           </Slider>
         </div>
@@ -255,7 +243,7 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
             What Our Users Say
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3"> 
+          <div className="grid grid-cols-1 sm:grid-cols-3">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs text-center">
               <p className="text-gray-700 italic">
                 "Event Pulse made managing our conference so easy. The tools

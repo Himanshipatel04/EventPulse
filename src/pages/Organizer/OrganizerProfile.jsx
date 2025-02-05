@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import axios from "axios";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Ticket,
+  CheckCircle,
+  Hourglass,
+  XCircle,
+  Handshake,
+  Pencil,
+  UserCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const OrganizerProfile = () => {
@@ -23,6 +35,8 @@ const OrganizerProfile = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [viewParticipants, setViewParticipants] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const [viewSponsors, setViewSponsors] = useState(false);
+  const [sponsors, setSponsors] = useState([]);
 
   const fetchEvents = async () => {
     try {
@@ -83,6 +97,18 @@ const OrganizerProfile = () => {
     }
   };
 
+  const getSponsorsForEvent = async (eventId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
+      );
+      console.log(response.data.data.sponsors);
+      setSponsors(response.data.data.sponsors);
+    } catch (error) {
+      console.log("Error fetching sponsors", error);
+    }
+  };
+
   useEffect(() => {
     if (user?._id) {
       fetchEvents();
@@ -96,7 +122,7 @@ const OrganizerProfile = () => {
           isModalOpen ? "backdrop-blur-lg " : ""
         } 
         ${
-          viewParticipants
+          viewParticipants || viewSponsors  
             ? "-translate-x-4 transition-all duration-500"
             : "translate-x-0 transition-all duration-500"
         }          
@@ -128,65 +154,124 @@ const OrganizerProfile = () => {
             {events?.map((event) => (
               <div
                 key={event._id}
-                className="bg-gray-100 relative pb-28 p-4 rounded-lg shadow-md flex flex-col"
+                className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 flex flex-col justify-between h-full"
               >
-                <h3 className="text-lg font-semibold text-teal-700 h-14">
-                  {event.title}
-                </h3>
-                <p className="text-sm font-semibold text-gray-600">
-                  {new Date(event.date).toDateString()}
-                </p>
-                <p className="text-sm font-semibold text-gray-700">
-                  {event.location}
-                </p>
-                <p className="text-sm text-gray-700 mt-2">
-                  {event.description}
-                </p>
-                <p className="text-sm text-gray-700 mt-1">
-                  🎟 Ticket Price: ₹{event.ticketPrices} /-
-                </p>
-                <p
-                  className={`text-sm font-semibold mt-1 ${
-                    event.status === "approved"
-                      ? "text-green-600"
-                      : event.status === "pending"
-                      ? "text-yellow-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  Status: {event.status}
-                </p>
-                <p className="text-sm text-gray-700 mt-1">
-                  👥 Participants: {event.participants.length}
-                </p>
+                {/* Event Details */}
+                <div className="flex-1">
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-teal-700 mb-2 line-clamp-2">
+                    {event.title}
+                  </h3>
 
-                {/* Manage Button */}
-                <button
-                  onClick={() => {
-                    setViewParticipants(true);
-                    getParticipantsForEvent(event._id);
-                  }}
-                  className="absolute bottom-14 w-[90%] bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600"
-                >
-                  View Participants
-                </button>
-                <button
-                  onClick={() => {
-                    setIsModalOpen(true);
-                    fetchEventById(event._id);
-                  }}
-                  className="absolute bottom-2 w-[90%] bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600"
-                >
-                  Update Event
-                </button>
+                  {/* Date & Time */}
+                  <div className="flex items-center text-sm text-gray-600 mb-2">
+                    <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>
+                      {new Date(event.date).toDateString()} (
+                      {event.time ?? "Time TBD"})
+                    </span>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center text-sm text-gray-700 mb-2">
+                    <MapPin  className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>{event.location}</span>
+                  </div>
+
+                  <div className="flex items-center text-sm text-gray-700 mb-2">
+                    <UserCircle className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>{event.organizerName ?? "N/A"}</span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-700 line-clamp-3 mb-3">
+                    {event.description}
+                  </p>
+
+                  {/* Ticket Price */}
+                  <div className="flex items-center text-sm text-gray-700 mb-2">
+                    <Ticket className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>₹{event.ticketPrices} /-</span>
+                  </div>
+
+                  {/* Event Status */}
+                  <div className="flex items-center text-sm font-semibold mb-2">
+                    {event.status === "approved" ? (
+                      <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
+                    ) : event.status === "pending" ? (
+                      <Hourglass className="w-4 h-4 mr-2 text-yellow-600" />
+                    ) : (
+                      <XCircle className="w-4 h-4 mr-2 text-red-600" />
+                    )}
+                    <span
+                      className={
+                        event.status === "approved"
+                          ? "text-green-600"
+                          : event.status === "pending"
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                      }
+                    >
+                      {event.status.charAt(0).toUpperCase() +
+                        event.status.slice(1)}
+                    </span>
+                  </div>
+
+                  {/* Participants & Sponsors */}
+                  <div className="flex justify-between text-sm text-gray-700 mb-4">
+                    <div className="flex items-center">
+                      <Users className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>
+                        {event.participants?.length || 0} Participants
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Handshake className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>{event.sponsors?.length || 0} Sponsors</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fixed Bottom Buttons */}
+                <div className="mt-auto flex flex-col gap-2">
+                  <button
+                    onClick={() => {
+                      setViewParticipants(true);
+                      getParticipantsForEvent(event._id);
+                    }}
+                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                  >
+                    <Users className="w-4 h-4 mr-2" /> View Participants
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setViewSponsors(true);
+                      getSponsorsForEvent(event._id);
+                    }}
+                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                  >
+                    <Handshake className="w-4 h-4 mr-2" /> View Sponsors
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsModalOpen(true);
+                      fetchEventById(event._id);
+                    }}
+                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                  >
+                    <Pencil className="w-4 h-4 mr-2" /> Update Event
+                  </button>
+                </div>
               </div>
             ))}
           </div>
 
           {/* View All Events Button */}
-          <button className="mt-6 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+          {/* <button className="mt-6 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
             View All Events
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -249,6 +334,13 @@ const OrganizerProfile = () => {
                 />
 
                 <input
+                  placeholder="Event Time"
+                  value={selectedEvent?.time}
+                  name="time"
+                  onChange={handleInputChange}
+                  className="border border-teal-400 text-black rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                />
+                <input
                   placeholder="Event Location"
                   value={selectedEvent?.location}
                   name="location"
@@ -268,7 +360,7 @@ const OrganizerProfile = () => {
       </div>
 
       <div
-  className={`transform min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
+        className={`transform max-h-96 overflow-auto min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
     outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
     transition-all duration-500 ease-in-out
     ${
@@ -277,29 +369,67 @@ const OrganizerProfile = () => {
         : "hidden translate-y-5 scale-95 invisible"
     }
   `}
->
-  <div className="flex items-center justify-between">
-    <h2 className="text-lg font-semibold text-teal-700">
-      {`Participants (${participants?.length})`}
-    </h2>
-    <button
-      onClick={() => setViewParticipants(false)}
-      className="bg-red-500 flex items-center justify-center rounded-full h-6 w-6 text-center"
-    >
-      x
-    </button>
-  </div>
-  {participants?.length ? (
-    participants.map((value, index) => (
-      <p className="text-gray-600 pb-1 mt-2 border-b border-gray-200" key={index}>
-        {value.email}
-      </p>
-    ))
-  ) : (
-    <p>No participants found!</p>
-  )}
-</div>
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-teal-700">
+            {`Participants (${participants?.length})`}
+          </h2>
+          <button
+            onClick={() => setViewParticipants(false)}
+            className="bg-red-500 flex items-center justify-center rounded-full h-6 w-6 text-center"
+          >
+            X
+          </button>
+        </div>
+        {participants?.length ? (
+          participants.map((value, index) => (
+            <p
+              className="text-gray-600 pb-1 mt-2 border-b border-gray-200"
+              key={index}
+            >
+              {value.email}
+            </p>
+          ))
+        ) : (
+          <p className="text-gray-400">No participants found!</p>
+        )}
+      </div>
 
+      <div
+        className={`transform max-h-96 overflow-auto min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
+    outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
+    transition-all duration-500 ease-in-out
+    ${
+      viewSponsors
+        ? "block translate-y-0 scale-100 visible"
+        : "hidden translate-y-5 scale-95 invisible"
+    }
+  `}
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-teal-700">
+            {`Sponsors (${sponsors?.length})`}
+          </h2>
+          <button
+            onClick={() => setViewSponsors(false)}
+            className="bg-red-500 flex items-center justify-center rounded-full h-6 w-6 text-center"
+          >
+            X
+          </button>
+        </div>
+        {sponsors?.length ? (
+          sponsors.map((value, index) => (
+            <p
+              className="text-gray-600 pb-1 mt-2 border-b border-gray-200"
+              key={index}
+            >
+              {value.name}
+            </p>
+          ))
+        ) : (
+          <p className="text-gray-400">No sponsors found!</p>
+        )}
+      </div>
     </div>
   );
 };
