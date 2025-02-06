@@ -1,18 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UsersSection from "./UsersSection";
 import ApprovedEventsSection from "./ApprovedEventsSection";
 import SponsorsSection from "./SponsorsSection";
 import PendingEventsSection from "./PendingEventsSection";
+import axios from "axios";
 
 const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState("users");
+  const [pendingEvents, setPendingEvents] = useState(0);
+
+  const fetchPendingEvents = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/admin/getPendingEvents"
+      );
+      setPendingEvents(response.data.data.events.length);
+    } catch (error) {
+      console.log("Error fetching pending events", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPendingEvents();
+  }, []);
 
   return (
     <div className="pt-24 w-full min-h-screen bg-gray-50 pb-5 px-5 flex md:flex-row flex-col gap-4 ">
       {/* Sidebar */}
       <div className="outline outline-1 outline-gray-300 rounded-lg w-full md:w-[20vh] h-fit md:h-[85vh] ">
         <div className="flex flex-col items-center ">
-        
           <h2 className="text-lg font-bold py-4">Admin</h2>
           <hr className="w-full border-gray-300 " />
           <div className="flex w-full flex-row md:flex-col gap-4 py-3 px-3 md:px-0">
@@ -24,9 +40,10 @@ const AdminProfile = () => {
                   activeTab === tab
                     ? "bg-teal-200 backdrop-blur-md text-black"
                     : "text-gray-700"
-                }`}
+                } `}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
+                {tab === "pending" && `(${pendingEvents})`}
               </button>
             ))}
           </div>

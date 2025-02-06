@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 
 const ApprovedEventsSection = () => {
   const [events, setEvents] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [sponsors, setSponsors] = useState([]);
+  const [dropdownValue, setDropdownValue] = useState("all");
+  const [eventsCount, setEventsCount] = useState(0);      
 
   const fetchEvents = async () => {
     try {
@@ -13,10 +16,25 @@ const ApprovedEventsSection = () => {
         "http://localhost:4000/api/events/allEvents"
       );
       setEvents(response.data.data.events);
+      setAllEvents(response.data.data.events);
+      setEventsCount(response.data.data.events.length); 
     } catch (error) {
       console.log("Error fetching pending events", error);
     }
   };
+
+  useEffect(() => {
+    if (dropdownValue === "all") {
+      setEvents(allEvents); // Restore all events
+      setEventsCount(allEvents.length);       
+    } else {
+      const filteredEvents = allEvents.filter(
+        (event) => event.status === dropdownValue
+      );
+      setEvents(filteredEvents);
+      setEventsCount(filteredEvents.length);      
+    }
+  }, [dropdownValue, allEvents]);
 
   const getSponsorsForEvent = async (eventId) => {
     try {
@@ -48,7 +66,25 @@ const ApprovedEventsSection = () => {
     <div>
       <div>
         <div>
-          <h3 className="text-xl font-semibold">All Events</h3>
+          <div className="flex justify-between items-center">
+            <h3 className="text-xl font-semibold">All Events</h3>
+           <div className="flex items-center justify-center">
+            <p className="mr-5 bg-teal-500 text-white px-2.5 py-1.5 rounded-md">{eventsCount} events</p>     
+
+           <select
+              name=""
+              id=""
+              value={dropdownValue}
+              onChange={(e) => setDropdownValue(e.target.value)}
+              className={`p-2 rounded-md border outline-none `}
+            >
+              <option value="all">All</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+            </select>
+           </div>
+          </div>
           <hr className="mt-2" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
@@ -67,7 +103,7 @@ const ApprovedEventsSection = () => {
         {/* No Pending Events */}
         {events.length === 0 && (
           <div className="bg-white p-3 rounded-xl shadow-lg border text-center">
-            <p>No pending events for approval.</p>
+            <p>No events to show.</p>
           </div>
         )}
 
@@ -138,7 +174,7 @@ const Event = ({
   getSponsorsForEvent,
 }) => {
   return (
-    <div className="bg-white p-3 rounded-xl shadow-lg border flex flex-col justify-between">
+    <div className="bg-white p-3 rounded-md shadow-md border flex flex-col justify-between">
       {/* Event Title */}
       <div>
         <h3 className="text-xl font-bold mb-2">{event.title}</h3>
