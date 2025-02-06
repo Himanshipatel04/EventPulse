@@ -1,0 +1,8 @@
+Add search at all places
+
+Add toasters
+
+Add routing on login and logout
+
+Add scrollY on opening a new page
+

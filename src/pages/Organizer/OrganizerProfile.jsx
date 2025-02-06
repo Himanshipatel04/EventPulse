@@ -19,18 +19,6 @@ import { FaChair } from "react-icons/fa";
 const OrganizerProfile = () => {
   const { user } = useUser();
 
-  if (!user) {
-    return (
-      <div className="mt-24 flex flex-col items-center justify-start min-h-[80vh] py-16">
-        <div className="max-w-6xl w-full mx-auto px-6 bg-white shadow-xl rounded-xl p-8">
-          <h2 className="text-3xl font-extrabold text-teal-700 mb-3 text-center">
-            Please log in to view your profile
-          </h2>
-        </div>
-      </div>
-    );
-  }
-
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -116,10 +104,22 @@ const OrganizerProfile = () => {
     }
   }, [user?._id]);
 
+  if (!user) {
+    return (
+      <div className="mt-24 flex flex-col items-center justify-start min-h-[80vh] py-16">
+        <div className="max-w-6xl w-full mx-auto px-6 bg-white shadow-xl rounded-xl p-8">
+          <h2 className="text-3xl font-extrabold text-teal-700 mb-3 text-center">
+            Please log in to view your profile
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen text-white p-6 pt-20 flex items-start justify-center">
+    <div className="min-h-screen text-white p-0 md:p-6 pt-20 flex items-start justify-center">
       <div
-        className={`max-w-7xl  text-gray-900 p-6 ${
+        className={`max-w-7xl  text-gray-900 p-4 md:p-6 ${
           isModalOpen ? "backdrop-blur-lg " : ""
         } 
         ${
@@ -146,12 +146,13 @@ const OrganizerProfile = () => {
               </p>
             </div>
             <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-              <Link to="/createEvent">Create Event + </Link>
+              <Link to="/createEvent">Create Event</Link>
             </button>
           </div>
 
           {/* Event Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+         <div className="max-h-[60vh] md:max-h-full overflow-auto">
+         <div className="grid grid-cols-1 md:max-h-full md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             {events?.map((event) => (
               <div
                 key={event._id}
@@ -273,6 +274,7 @@ const OrganizerProfile = () => {
               </div>
             ))}
           </div>
+         </div>
 
           {/* View All Events Button */}
           {/* <button className="mt-6 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">

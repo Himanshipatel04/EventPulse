@@ -78,7 +78,7 @@ const ApprovedEventsSection = () => {
                 id=""
                 value={dropdownValue}
                 onChange={(e) => setDropdownValue(e.target.value)}
-                className={`p-2 rounded-md border outline-none `}
+                className={`p-2 text-sm rounded-md border outline-none `}
               >
                 <option value="all">All</option>
                 <option value="approved">Approved</option>

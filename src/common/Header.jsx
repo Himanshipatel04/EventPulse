@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
+import { Link, useNavigate } from "react-router-dom"; // Assuming you're using React Router for navigation
 import { useUser } from "../context/UserContext";
 import { IoMenu } from "react-icons/io5";
 
 const Header = () => {
   const { user } = useUser();
-  console.log(user);
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  console.log(showMenu);
+  const { navigate } = useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -26,7 +26,10 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    window.location.reload();
+    navigate("/");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   return (

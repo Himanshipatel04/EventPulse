@@ -60,7 +60,7 @@ const UsersSection = () => {
             id=""
             value={dropdownValue}
             onChange={(e) => setDropdownValue(e.target.value)}
-            className={`p-2 rounded-md border outline-none `}
+            className={`p-2 rounded-md text-sm border outline-none `}
           >
             <option value="all">All</option>
             <option value="Attendee">Attendee</option>

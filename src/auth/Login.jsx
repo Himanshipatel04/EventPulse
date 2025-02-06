@@ -54,8 +54,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-teal-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl outline outline-2 outline-teal-500">
+    <div className="flex items-center justify-center h-screen py-6 pt-20 bg-teal-50">
+      <div className="w-full max-w-80 md:max-w-md p-8 bg-white rounded-lg shadow-xl outline
+       outline-2 outline-teal-500">
         <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">
           Event Pulse
         </h2>

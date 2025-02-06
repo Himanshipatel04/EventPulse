@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { useUser } from "../../context/UserContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+import { useEffect, useState } from "react";
 
 const CreateEvent = () => {
   const { user } = useUser();
-  const navigate = useNavigate()
-
-  if (!user) {
-    return (
-      <div className="mt-24 flex flex-col items-center justify-start min-h-[80vh] py-16">
-        <div className="max-w-6xl w-full mx-auto px-6 bg-white shadow-xl rounded-xl p-8">
-          <h2 className="text-3xl font-extrabold text-teal-700 mb-3 text-center">
-            Please log in to create an event
-          </h2>
-        </div>
-      </div>
-    );
-  }
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     date: "",
-    time:"",
+    time: "",
     location: "",
     organizerName: "",
-    maximumSlots: "",               
-    organizerId: user._id,
+    maximumSlots: "",
+    organizerId: user?._id || "", // Ensure this doesn't break if user is null
     status: "pending",
     ticketPrices: "",
   });
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const events = await axios.get(
+          "http://localhost:4000/api/events/allEvents"
+        );
+        console.log(events);
+      } catch (error) {
+        console.error("Error fetching events", error);
+      }
+    };
+    fetchEvents();
+  }, []); // ✅ Add empty dependency array to prevent infinite calls
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,30 +41,39 @@ const CreateEvent = () => {
     }));
   };
 
-  useEffect(()=>{
-    const fetchEvents = async()=>{
-           const events = await axios.get("http://localhost:4000/api/events/allEvents")
-           console.log(events)
-    }
-    fetchEvents()
-  })
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      alert("Please login to create an event");
+      return;
+    }
     try {
-        const response = await axios.post("http://localhost:4000/api/events/createEvent", formData);
-        console.log(response.data); 
-        navigate("/organizer-profile")
-        alert("Event created successfully")                        
+      const response = await axios.post(
+        "http://localhost:4000/api/events/createEvent",
+        formData
+      );
+      console.log(response.data);
+      navigate("/organizer-profile");
+      alert("Event created successfully");
     } catch (error) {
-        console.log("Error creating event", error);
-        alert("Error creating event")           
+      console.error("Error creating event", error);
+      alert("Error creating event");
     }
   };
 
+  // ✅ Prevent early return before hooks
+  if (!user) {
+    return (
+      <div className="text-center mt-10 text-red-500">
+        <h2>Please login to create an event</h2>
+      </div>
+    );
+  }
+
+
   return (
-    <div className="mt-24 flex flex-col items-center justify-start min-h-[80vh]  py-16">
-      <div className="max-w-6xl w-full mx-auto px-6 bg-white shadow-xl rounded-xl p-8">
+    <div className="mt-10 flex flex-col items-center justify-start min-h-[80vh]  py-16">
+      <div className="max-w-6xl w-full mx-auto bg-white rounded-xl p-8">
         <h2 className="text-3xl font-extrabold text-teal-700 mb-3 text-center">
           Create Your Event 🗓️
         </h2>
@@ -136,7 +146,7 @@ const CreateEvent = () => {
               htmlFor="description"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-             Maximum Participants
+              Maximum Participants
             </label>
             <input
               id="maximumSlots"
@@ -169,13 +179,13 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Event Time */}      
+          {/* Event Time */}
           <div className="mb-6">
             <label
               htmlFor="date"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Event Time (24-hour format e.g. 14:30 - 16:30)   
+              Event Time (24-hour format e.g. 14:30 - 16:30)
             </label>
             <input
               type="text"

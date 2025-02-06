@@ -4,10 +4,12 @@ import ApprovedEventsSection from "./ApprovedEventsSection";
 import SponsorsSection from "./SponsorsSection";
 import PendingEventsSection from "./PendingEventsSection";
 import axios from "axios";
+import { useUser } from "../../context/UserContext";
 
 const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState("users");
   const [pendingEvents, setPendingEvents] = useState(0);
+  const { user } = useUser();
 
   const fetchPendingEvents = async () => {
     try {
@@ -23,6 +25,18 @@ const AdminProfile = () => {
   useEffect(() => {
     fetchPendingEvents();
   }, []);
+
+  if (!user || user.role !== "Admin") {
+    return (
+      <div className="mt-24 flex flex-col items-center justify-start min-h-[80vh] py-16">
+        <div className="max-w-6xl w-full mx-auto px-6 bg-white shadow-xl rounded-xl p-8">
+          <h2 className="text-3xl font-extrabold text-teal-700 mb-3 text-center">
+            You are not authorized to view this page.
+          </h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 w-full min-h-screen bg-gray-50 pb-5 px-5 flex md:flex-row flex-col gap-4 ">
@@ -44,7 +58,7 @@ const AdminProfile = () => {
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
                 <span className="hidden md:inline">
-                {tab === "pending" && `(${pendingEvents})`}
+                  {tab === "pending" && `(${pendingEvents})`}
                 </span>
               </button>
             ))}
