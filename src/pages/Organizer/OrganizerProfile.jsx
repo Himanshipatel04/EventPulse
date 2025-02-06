@@ -14,6 +14,7 @@ import {
   UserCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { FaChair } from "react-icons/fa";
 
 const OrganizerProfile = () => {
   const { user } = useUser();
@@ -118,7 +119,7 @@ const OrganizerProfile = () => {
   return (
     <div className="min-h-screen text-white p-6 pt-20 flex items-start justify-center">
       <div
-        className={`max-w-7xl text-gray-900 p-6 ${
+        className={`max-w-7xl  text-gray-900 p-6 ${
           isModalOpen ? "backdrop-blur-lg " : ""
         } 
         ${
@@ -192,6 +193,11 @@ const OrganizerProfile = () => {
                   <div className="flex items-center text-sm text-gray-700 mb-2">
                     <Ticket className="w-4 h-4 mr-2 text-gray-500" />
                     <span>₹{event.ticketPrices} /-</span>
+                  </div>
+
+                  <div className="flex items-center text-sm text-gray-700 mb-2">
+                    <FaChair className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>{event.maximumSlots} </span>
                   </div>
 
                   {/* Event Status */}

@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const UsersSection = () => {
   const [users, setUsers] = useState([]);
+  const [dropdownValue, setDropdownValue] = useState("all");
+  const [usersCount, setUsersCount] = useState(0);
+  const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
     fetchUsers();
@@ -10,26 +13,64 @@ const UsersSection = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/users/getUsers');
+      const response = await axios.get(
+        "http://localhost:4000/api/users/getUsers"
+      );
       setUsers(response.data.data);
+      setAllUsers(response.data.data);
+      setUsersCount(response.data.data.length);
     } catch (error) {
-      console.error('Error fetching users', error);
+      console.error("Error fetching users", error);
     }
   };
+
+  useEffect(() => {
+    if (dropdownValue === "all") {
+      setUsers(allUsers); // Restore all events
+      setUsersCount(allUsers.length);
+    } else {
+      const filteredUsers = allUsers.filter(
+        (user) => user.role === dropdownValue
+      );
+      setUsers(filteredUsers);
+      setUsersCount(filteredUsers.length);
+    }
+  }, [dropdownValue, allUsers]);
 
   const onDeleteUser = async (id) => {
     try {
       await axios.delete(`http://localhost:4000/api/users/deleteUser/${id}`);
       fetchUsers();
     } catch (error) {
-      console.error('Error deleting user', error);
+      console.error("Error deleting user", error);
     }
   };
 
   return (
     <div className="">
-      <h3 className="text-xl font-semibold">Users</h3>
-      <hr className='mt-2' />
+      <div className="flex justify-between items-center">
+        <h3 className="text-xl font-semibold">Users</h3>
+        <div className="flex items-center justify-center">
+          <p className="mr-5 bg-teal-500 text-white px-2.5 py-1.5 rounded-md">
+            {usersCount} users
+          </p>
+
+          <select
+            name=""
+            id=""
+            value={dropdownValue}
+            onChange={(e) => setDropdownValue(e.target.value)}
+            className={`p-2 rounded-md border outline-none `}
+          >
+            <option value="all">All</option>
+            <option value="Attendee">Attendee</option>
+            <option value="Admin">Admin</option>
+            <option value="Sponsor">Sponsor</option>
+            <option value="Organizer">Organizer</option>
+          </select>
+        </div>
+      </div>
+      <hr className="mt-2" />
       <table className="w-full mt-4 border-collapse border border-gray-300">
         <thead>
           <tr className="">
@@ -45,8 +86,10 @@ const UsersSection = () => {
               <tr key={user._id} className="text-center">
                 <td className="border p-2">{user.email}</td>
                 <td className="border p-2">{user.role}</td>
-                <td className="border p-2">{user.isVerified  ? "Yes" : "No"}</td>
-                <td className="border p-2">{new Date(user.createdAt).toLocaleString()}</td>
+                <td className="border p-2">{user.isVerified ? "Yes" : "No"}</td>
+                <td className="border p-2">
+                  {new Date(user.createdAt).toLocaleString()}
+                </td>
                 <td className="border p-2">
                   <button
                     onClick={() => onDeleteUser(user._id)}
@@ -59,7 +102,9 @@ const UsersSection = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center p-4">No users found</td>
+              <td colSpan="4" className="text-center p-4">
+                No users found
+              </td>
             </tr>
           )}
         </tbody>

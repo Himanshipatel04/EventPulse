@@ -158,7 +158,7 @@ const Home = () => {
 
                     {/* Event Participants */}
                     <p className="text-sm text-gray-700 mb-4">
-                      👥 Participants: {event.participants.length}
+                      👥 Participants: {event.participants.length}/{event.maximumSlots}
                     </p>
                   </div>
                   {/* Action Buttons */}

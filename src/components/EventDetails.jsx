@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Calendar, Clock, MapPin, Users, IndianRupee, Award, UserCheck2Icon, UserCircle2 } from "lucide-react"; // Icons for better UI
+import { FaChair } from "react-icons/fa";
 
 const EventDetails = () => {
   const { eventId } = useParams();
@@ -79,6 +80,14 @@ const EventDetails = () => {
            {event.organizerName ||""} (Organizer)
           </p>
         </div>
+
+        <div className="flex items-center gap-3 mb-4">
+          <FaChair className="text-teal-600" />
+          <p className="text-lg text-gray-700">
+           {event.maximumSlots ||""} (Maximum Participants)
+          </p>
+        </div>
+
 
         {/* Description */}
         <div className="mb-6">

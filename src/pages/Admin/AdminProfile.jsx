@@ -43,7 +43,9 @@ const AdminProfile = () => {
                 } `}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "}
+                <span className="hidden md:inline">
                 {tab === "pending" && `(${pendingEvents})`}
+                </span>
               </button>
             ))}
           </div>

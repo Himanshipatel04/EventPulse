@@ -26,6 +26,7 @@ const CreateEvent = () => {
     time:"",
     location: "",
     organizerName: "",
+    maximumSlots: "",               
     organizerId: user._id,
     status: "pending",
     ticketPrices: "",
@@ -122,6 +123,25 @@ const CreateEvent = () => {
               id="organizerName"
               name="organizerName"
               value={formData.organizerName}
+              onChange={handleChange}
+              required
+              rows="2"
+              maxLength={200}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500"
+            ></input>
+          </div>
+
+          <div className="mb-6">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+             Maximum Participants
+            </label>
+            <input
+              id="maximumSlots"
+              name="maximumSlots"
+              value={formData.maximumSlots}
               onChange={handleChange}
               required
               rows="2"

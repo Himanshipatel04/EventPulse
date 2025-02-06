@@ -86,7 +86,7 @@ const Signup = () => {
             >
               <option value="Attendee">Attendee</option>
               <option value="Organizer">Organizer</option>
-              <option value="Admin">Admin</option>
+              <option value="Sponsor">Sponsor</option>
             </select>
           </div>
           <button

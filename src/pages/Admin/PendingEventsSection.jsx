@@ -40,6 +40,40 @@ const PendingEventsSection = () => {
     }
   };
 
+  const onApprove = async (eventId) => {
+    try {
+      await axios.put(      
+        `http://localhost:4000/api/admin/approveEvent/${eventId}`         
+      );
+      fetchPendingEvents();           
+    } catch (error) {       
+      console.error("Error approving event", error);              
+    }
+  };
+
+  const onReject = async (eventId) => {               
+    try { 
+      await axios.put(  
+        `http://localhost:4000/api/admin/rejectEvent/${eventId}`            
+      );
+      fetchPendingEvents();               
+    } catch (error) {     
+      console.error("Error rejecting event", error);              
+    }
+  };
+
+  const onDelete = async (eventId) => {         
+    try {
+      await axios.delete(         
+        `http://localhost:4000/api/admin/deleteEvent/${eventId}`            
+      );
+      fetchPendingEvents();       
+    } catch (error) {       
+      console.error("Error deleting event", error);     
+    }
+  };
+
+
   useEffect(() => {
     fetchPendingEvents();
   }, []);
@@ -49,7 +83,6 @@ const PendingEventsSection = () => {
       <div>
         <div>
           <h3 className="text-xl font-semibold">Pending Events</h3>
-          <p>Pending events for approval will be displayed here...</p>
           <hr className="mt-2" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 py-4">
@@ -57,9 +90,9 @@ const PendingEventsSection = () => {
             <PendingEvents
               key={event._id}
               event={event}
-              onApprove={() => {}}
-              onReject={() => {}}
-              onDelete={() => {}}
+              onApprove={onApprove}
+              onReject={onReject}
+              onDelete={onDelete}
               setIsDrawerOpen={setIsDrawerOpen}
               getParticipantsForEvent={getParticipantsForEvent}
               getSponsorsForEvent={getSponsorsForEvent}
@@ -163,6 +196,16 @@ const PendingEvents = ({
           <span className="font-semibold">Organizer:</span>{" "}
           {event.organizerName}
         </p>
+        <p className="text-gray-600">
+          <span className="font-semibold">Participants:</span>{" "}
+          {event.participants.length}
+        </p>
+        <p className="text-gray-600">
+          <span className="font-semibold">Maximum Slots:</span>{" "}
+          {event.maximumSlots}
+        </p>
+
+
         <p className="text-gray-600 mb-3">
           <span className="font-semibold">Ticket Price:</span> ₹
           {event.ticketPrices}

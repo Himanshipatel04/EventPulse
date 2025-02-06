@@ -8,7 +8,7 @@ const ApprovedEventsSection = () => {
   const [participants, setParticipants] = useState([]);
   const [sponsors, setSponsors] = useState([]);
   const [dropdownValue, setDropdownValue] = useState("all");
-  const [eventsCount, setEventsCount] = useState(0);      
+  const [eventsCount, setEventsCount] = useState(0);
 
   const fetchEvents = async () => {
     try {
@@ -17,7 +17,7 @@ const ApprovedEventsSection = () => {
       );
       setEvents(response.data.data.events);
       setAllEvents(response.data.data.events);
-      setEventsCount(response.data.data.events.length); 
+      setEventsCount(response.data.data.events.length);
     } catch (error) {
       console.log("Error fetching pending events", error);
     }
@@ -26,13 +26,13 @@ const ApprovedEventsSection = () => {
   useEffect(() => {
     if (dropdownValue === "all") {
       setEvents(allEvents); // Restore all events
-      setEventsCount(allEvents.length);       
+      setEventsCount(allEvents.length);
     } else {
       const filteredEvents = allEvents.filter(
         (event) => event.status === dropdownValue
       );
       setEvents(filteredEvents);
-      setEventsCount(filteredEvents.length);      
+      setEventsCount(filteredEvents.length);
     }
   }, [dropdownValue, allEvents]);
 
@@ -67,23 +67,25 @@ const ApprovedEventsSection = () => {
       <div>
         <div>
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold">All Events</h3>
-           <div className="flex items-center justify-center">
-            <p className="mr-5 bg-teal-500 text-white px-2.5 py-1.5 rounded-md">{eventsCount} events</p>     
+            <h3 className="text-xl font-semibold">Events</h3>
+            <div className="flex items-center justify-center">
+              <p className="mr-5 bg-teal-500 text-white px-2.5 py-1.5 rounded-md">
+                {eventsCount} events
+              </p>
 
-           <select
-              name=""
-              id=""
-              value={dropdownValue}
-              onChange={(e) => setDropdownValue(e.target.value)}
-              className={`p-2 rounded-md border outline-none `}
-            >
-              <option value="all">All</option>
-              <option value="approved">Approved</option>
-              <option value="pending">Pending</option>
-              <option value="rejected">Rejected</option>
-            </select>
-           </div>
+              <select
+                name=""
+                id=""
+                value={dropdownValue}
+                onChange={(e) => setDropdownValue(e.target.value)}
+                className={`p-2 rounded-md border outline-none `}
+              >
+                <option value="all">All</option>
+                <option value="approved">Approved</option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
           </div>
           <hr className="mt-2" />
         </div>
@@ -205,10 +207,21 @@ const Event = ({
           {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
         </p>
 
+        <p className="text-gray-700">
+          <span className="font-semibold">Participants:</span> 
+          {" "}{event.participants.length}    
+        </p>
+
+        <p className="text-gray-700">
+          <span className="font-semibold">Maximum Slots:</span> 
+          {" "}{event.maximumSlots}
+        </p>
+
         <p className="text-gray-700 mb-3">
           <span className="font-semibold">Ticket Price:</span> ₹
           {event.ticketPrices}
         </p>
+
         <p className="text-gray-700 mb-4">{event.description}</p>
       </div>
       {/* Action Buttons */}
