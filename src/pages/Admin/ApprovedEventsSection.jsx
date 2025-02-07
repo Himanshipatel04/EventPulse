@@ -118,9 +118,9 @@ const ApprovedEventsSection = () => {
           <div className="p-4">
             <button
               onClick={() => setIsDrawerOpen(false)}
-              className="bg-red-500 px-4 py-2 rounded-md text-white hover:bg-red-600"
+              className="bg-red-500 px-3 py-1 rounded-full text-white hover:bg-red-600"
             >
-              Close
+              X
             </button>
             <h2 className="text-xl font-bold mt-4">Participants & Sponsors</h2>
             {participants && participants.length > 0 && (

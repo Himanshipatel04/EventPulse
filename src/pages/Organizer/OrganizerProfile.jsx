@@ -117,9 +117,9 @@ const OrganizerProfile = () => {
   }
 
   return (
-    <div className="min-h-screen text-white p-0 md:p-6 pt-20 flex items-start justify-center">
+    <div className="min-h-screen text-white p-0 md:p-6 mt-12 flex items-start justify-center">
       <div
-        className={`max-w-7xl  text-gray-900 p-4 md:p-6 ${
+        className={`max-w-8xl  text-gray-900 p-4 md:p-6 ${
           isModalOpen ? "backdrop-blur-lg " : ""
         } 
         ${
@@ -135,7 +135,7 @@ const OrganizerProfile = () => {
         </div>
 
         {/* Manage Events Section */}
-        <div className="mt-6 outline outline-gray-200 outline-1 p-6 rounded-xl">
+        <div className="mt-2 outline outline-gray-200 outline-1 p-4 rounded-xl">
           <div className="flex items-center justify-between border-b border-gray-200 pb-4">
             <div>
               <h2 className="text-xl font-semibold text-teal-700">
@@ -151,7 +151,7 @@ const OrganizerProfile = () => {
           </div>
 
           {/* Event Cards */}
-         <div className="max-h-[60vh] md:max-h-full overflow-auto">
+         <div className="max-h-[60vh] md:max-h-[70vh] overflow-auto scrollbar-none">
          <div className="grid grid-cols-1 md:max-h-full md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             {events?.map((event) => (
               <div
@@ -326,6 +326,14 @@ const OrganizerProfile = () => {
                   name="title"
                   disabled={true}
                   className="border border-teal-400 rounded-md p-2 text-gray-400 font-semibold focus:outline-none focus:ring-1 focus:ring-teal-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Maximum Slots" 
+                  value={selectedEvent?.maximumSlots}
+                  name="maximumSlots"
+                  onChange={handleInputChange}                  
+                  className="border border-teal-400 rounded-md p-2 text-black focus:outline-none focus:ring-1 focus:ring-teal-500"
                 />
                 <input
                   type="date"

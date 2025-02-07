@@ -7,7 +7,7 @@ const Header = () => {
   const { user } = useUser();
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const { navigate } = useNavigate();
+  const  navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +29,7 @@ const Header = () => {
     navigate("/");
     setTimeout(() => {
       window.location.reload();
-    }, 2000);
+    }, 1000);
   };
 
   return (

@@ -9,6 +9,44 @@
 
 /* Any custom CSS styles */
 .slick-slide {
-    padding: 0 15px; /* Add horizontal padding to create space between items */
-  }
-  
+  padding: 0 15px; /* Add horizontal padding to create space between items */
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+/* Apply to the entire website */
+* {
+  scrollbar-width: thin;  /* For Firefox */
+  scrollbar-color: #0f766e #f0f0f0;  /* Thumb & Track color */
+  scroll-behavior: smooth;
+}
+
+/* WebKit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;  /* Scrollbar width */
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f766e;  /* Track background color */
+  border-radius: 10px;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f766e;  /* Scrollbar color */
+  border-radius: 10px;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0f766e;  /* Hover color */
+  scroll-behavior: smooth;
+}

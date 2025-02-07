@@ -6,3 +6,12 @@ Add routing on login and logout
 
 Add scrollY on opening a new page
 
+Remove two scrollbars --
+
+Add icons in admin sidepanel --
+
+Either write close or x
+
+Add loading
+
+Responsiveness for modal and participants panel
