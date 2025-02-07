@@ -20,12 +20,15 @@ import OrganizerProfile from "./pages/Organizer/OrganizerProfile";
 import CreateEvent from "./pages/Organizer/CreateEvent";
 import AttendeeProfile from "./pages/Attendee/AttendeeProfile";
 import AdminProfile from "./pages/Admin/AdminProfile";
+import SponsorProfile from "./pages/Sponsor/SponsorProfile";
+import SponsorEvent from "./pages/Sponsor/SponsorEvent";
 
 const App = () => {
   return (
     <Router>
       <Header />
-      <Routes >
+      <Routes>
+        {/* Header and Footer Routes       */}
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutUsPage />} />
@@ -33,20 +36,30 @@ const App = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/termsOfService" element={<TermsOfService />} />
         <Route path="/developer" element={<DeveloperPage />} />
+        <Route path="/getStarted" element={<GetStarted />} />
+
+        {/* Authentication Routes */}
         <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
-        <Route path="/getStarted" element={<GetStarted />} />
+
+        {/* Event Routes */}
         <Route path="/createEvent" element={<CreateEvent />} />
         <Route
           path="/register/:eventId/:eventTitle"
           element={<RegisterForEvent />}
         />
-        <Route path="/register/:eventId" element={<EventDetails />} />
-        <Route path="/organizer-profile" element={<OrganizerProfile />} />
+        <Route path="/event-details/:eventId" element={<EventDetails />} />
+        <Route
+          path="/sponsor/:eventId/:eventTitle"
+          element={<SponsorEvent />}
+        />
+        {/* Dashboard Routes */}
+        <Route path="/organizer-dashboard" element={<OrganizerProfile />} />
         <Route path="/attendee-dashboard" element={<AttendeeProfile />} />
         <Route path="/admin-dashboard" element={<AdminProfile />} />
+        <Route path="/sponsor-dashboard" element={<SponsorProfile />} />
       </Routes>
       <Footer />
     </Router>

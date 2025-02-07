@@ -7,7 +7,7 @@ const Header = () => {
   const { user } = useUser();
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const  navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,7 +65,7 @@ const Header = () => {
         {/* Call to Action Button */}
         {!user ? (
           <div className="flex items-center justify-center space-x-2">
-            <Link to="/signup">
+            <Link to="/login">
               <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition">
                 SignUp
               </button>
@@ -88,7 +88,9 @@ const Header = () => {
             <Link
               to={
                 user.role === "Organizer"
-                  ? "/organizer-profile"
+                  ? "/organizer-dashboard"
+                    : user.role === "Sponsor"
+                    ? "/sponsor-dashboard"
                   : user.role === "Attendee"
                   ? "/attendee-dashboard"
                   : "/admin-dashboard"
@@ -97,6 +99,8 @@ const Header = () => {
             >
               {user.role === "Organizer"
                 ? "View Profile"
+                  : user.role === "Sponsor"
+                  ? "Sponsor Profile"
                 : user.role === "Attendee"
                 ? "Dashboard"
                 : "Admin Dashboard"}

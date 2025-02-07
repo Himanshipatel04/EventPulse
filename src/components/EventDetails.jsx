@@ -1,12 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Calendar, Clock, MapPin, Users, IndianRupee, Award, UserCheck2Icon, UserCircle2 } from "lucide-react"; // Icons for better UI
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  IndianRupee,
+  Award,
+  UserCheck2Icon,
+  UserCircle2,
+} from "lucide-react"; // Icons for better UI
 import { FaChair } from "react-icons/fa";
 
 const EventDetails = () => {
   const { eventId } = useParams();
   const [event, setEvent] = useState({});
+  const {user} = useUser()
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -22,6 +32,7 @@ const EventDetails = () => {
 
     fetchEvent();
   }, [eventId]);
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 pt-24 min-h-[100vh]">
@@ -77,17 +88,16 @@ const EventDetails = () => {
         <div className="flex items-center gap-3 mb-4">
           <UserCircle2 className="text-teal-600" />
           <p className="text-lg text-gray-700">
-           {event.organizerName ||""} (Organizer)
+            {event.organizerName || ""} (Organizer)
           </p>
         </div>
 
         <div className="flex items-center gap-3 mb-4">
           <FaChair className="text-teal-600" />
           <p className="text-lg text-gray-700">
-           {event.maximumSlots ||""} (Maximum Participants)
+            {event.maximumSlots || ""} (Maximum Participants)
           </p>
         </div>
-
 
         {/* Description */}
         <div className="mb-6">
@@ -99,11 +109,19 @@ const EventDetails = () => {
 
         {/* Register Button */}
         <div className="text-center mt-6">
-          <a href={`/register/${event._id}/${event.title}`}>
-            <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-all duration-300 shadow-md hover:shadow-lg">
-              Register Now
-            </button>
-          </a>
+          {user && user.role === "admin" ? (
+            <a href={`/sponsor/${event._id}/${event.title}`}>               
+              <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-all duration-300 shadow-md hover:shadow-lg ml-4">
+                Sponsor Now
+              </button>
+            </a>
+          ) : (
+            <a href={`/register/${event._id}/${event.title}`}>
+              <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                Register Now
+              </button>
+            </a>
+          )}
         </div>
       </div>
     </div>

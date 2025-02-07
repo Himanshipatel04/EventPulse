@@ -158,24 +158,64 @@ const Home = () => {
 
                     {/* Event Participants */}
                     <p className="text-sm text-gray-700 mb-4">
-                      👥 Participants: {event.participants.length}/{event.maximumSlots}
+                      👥 Participants: {event.participants.length}/
+                      {event.maximumSlots}
                     </p>
                   </div>
                   {/* Action Buttons */}
-                  <div className="flex gap-2 mt-auto ">
-                    <Link
-                      to={`/register/${event._id}/${event.title}`}
-                      className="w-1/2"
-                    >
-                      <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
-                        Register for Event
-                      </button>
-                    </Link>
-                    <Link to={`/register/${event._id}`} className="w-1/2">
-                      <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
-                        View Event Details
-                      </button>
-                    </Link>
+                  <div className="flex gap-2 mt-auto">
+                    {/* Attendee or No User */}
+                    {(!user || user?.role === "Attendee") && (
+                      <div className="w-full flex gap-2">
+                        <Link
+                          to={`/register/${event._id}/${event.title}`}
+                          className="w-1/2"
+                        >
+                          <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                            Register for Event
+                          </button>
+                        </Link>
+                        <Link
+                          to={`/event-details/${event._id}`}
+                          className="w-1/2"
+                        >
+                          <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                            View Event Details
+                          </button>
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* Organizer */}
+                    {(user?.role === "Organizer" || user?.role === "Admin") && (
+                      <Link to={`/event/${event._id}`} className="w-full">
+                        <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                          View Event Details
+                        </button>
+                      </Link>
+                    )}
+
+                    {/* Sponsor */}
+                    {user?.role === "Sponsor" && (
+                      <div className="w-full flex gap-2">
+                        <Link
+                          to={`/sponsor/${event._id}/${event.title}`}
+                          className="w-1/2"
+                        >
+                          <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                            Sponsor Event
+                          </button>
+                        </Link>
+                        <Link
+                          to={`/event-details/${event._id}`}
+                          className="w-1/2"
+                        >
+                          <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
+                            View Event Details
+                          </button>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
