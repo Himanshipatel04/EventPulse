@@ -54,7 +54,7 @@ const AdminProfile = () => {
           <h2 className="text-lg font-bold py-4">Admin</h2>
           <hr className="w-full border-gray-300" />
           <div className="flex w-full flex-row md:flex-col gap-4 py-3 px-3 md:px-0">
-            {["users", "events", "sponsors", "pending"].map((tab) => (
+            {["users", "sponsors", "events", "pending"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -80,8 +80,8 @@ const AdminProfile = () => {
         {/* Content Sections */}
         <div className="flex-1 overflow-y-auto p-4 scrollbar-none">
           {activeTab === "users" && <UsersSection />}
-          {activeTab === "events" && <ApprovedEventsSection />}
           {activeTab === "sponsors" && <SponsorsSection />}
+          {activeTab === "events" && <ApprovedEventsSection />}
           {activeTab === "pending" && <PendingEventsSection />}
         </div>
       </div>

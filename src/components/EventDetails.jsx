@@ -12,6 +12,7 @@ import {
   UserCircle2,
 } from "lucide-react"; // Icons for better UI
 import { FaChair } from "react-icons/fa";
+import { useUser } from "../context/UserContext";
 
 const EventDetails = () => {
   const { eventId } = useParams();
