@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Loader, Loader2 } from "lucide-react";
 
 const PendingEventsSection = () => {
   const [pendingEvents, setPendingEvents] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [sponsors, setSponsors] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
 
   const fetchPendingEvents = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         "http://localhost:4000/api/admin/getPendingEvents"
@@ -15,10 +18,13 @@ const PendingEventsSection = () => {
       setPendingEvents(response.data.data.events);
     } catch (error) {
       console.log("Error fetching pending events", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const getSponsorsForEvent = async (eventId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
@@ -26,10 +32,13 @@ const PendingEventsSection = () => {
       setSponsors(response.data.data.sponsors);
     } catch (error) {
       console.log("Error fetching sponsors for event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const getParticipantsForEvent = async (eventId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
@@ -37,42 +46,50 @@ const PendingEventsSection = () => {
       setParticipants(response.data.data.participants);
     } catch (error) {
       console.log("Error fetching participants for event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onApprove = async (eventId) => {
+    setIsLoading(true);
     try {
-      await axios.put(      
-        `http://localhost:4000/api/admin/approveEvent/${eventId}`         
+      await axios.put(
+        `http://localhost:4000/api/admin/approveEvent/${eventId}`
       );
-      fetchPendingEvents();           
-    } catch (error) {       
-      console.error("Error approving event", error);              
+      fetchPendingEvents();
+    } catch (error) {
+      console.error("Error approving event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const onReject = async (eventId) => {               
-    try { 
-      await axios.put(  
-        `http://localhost:4000/api/admin/rejectEvent/${eventId}`            
-      );
-      fetchPendingEvents();               
-    } catch (error) {     
-      console.error("Error rejecting event", error);              
-    }
-  };
-
-  const onDelete = async (eventId) => {         
+  const onReject = async (eventId) => {
+    setIsLoading(true);
     try {
-      await axios.delete(         
-        `http://localhost:4000/api/admin/deleteEvent/${eventId}`            
-      );
-      fetchPendingEvents();       
-    } catch (error) {       
-      console.error("Error deleting event", error);     
+      await axios.put(`http://localhost:4000/api/admin/rejectEvent/${eventId}`);
+      fetchPendingEvents();
+    } catch (error) {
+      console.error("Error rejecting event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const onDelete = async (eventId) => {
+    setIsLoading(true);
+    try {
+      await axios.delete(
+        `http://localhost:4000/api/admin/deleteEvent/${eventId}`
+      );
+      fetchPendingEvents();
+    } catch (error) {
+      console.error("Error deleting event", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchPendingEvents();
@@ -85,27 +102,33 @@ const PendingEventsSection = () => {
           <h3 className="text-xl font-semibold">Pending Events</h3>
           <hr className="mt-2" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 py-4">
-          {pendingEvents.map((event) => (
-            <PendingEvents
-              key={event._id}
-              event={event}
-              onApprove={onApprove}
-              onReject={onReject}
-              onDelete={onDelete}
-              setIsDrawerOpen={setIsDrawerOpen}
-              getParticipantsForEvent={getParticipantsForEvent}
-              getSponsorsForEvent={getSponsorsForEvent}
-            />
-          ))}
-        </div>
 
-        {/* No Pending Events */}
-        {pendingEvents.length === 0 && (
-          <div className="bg-white p-3 rounded-xl shadow-lg border text-center">
-            <p>No pending events for approval.</p>
+        {isLoading ? (
+         <div className="flex h-[85vh] animate-spin items-center justify-center"> <Loader size={40} /></div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 py-4">
+            {pendingEvents.length === 0 ? (
+              <div className="bg-white p-3 rounded-xl w-full shadow-lg border text-center">
+                <p>No pending events for approval.</p>
+              </div>
+            ) : (
+              pendingEvents.map((event) => (
+                <PendingEvents
+                  key={event._id}
+                  event={event}
+                  onApprove={onApprove}
+                  onReject={onReject}
+                  onDelete={onDelete}
+                  setIsDrawerOpen={setIsDrawerOpen}
+                  getParticipantsForEvent={getParticipantsForEvent}
+                  getSponsorsForEvent={getSponsorsForEvent}
+                />
+              ))
+            )}
           </div>
         )}
+
+        {/* No Pending Events */}
 
         {/* Event Drawer */}
         <div
@@ -122,7 +145,7 @@ const PendingEventsSection = () => {
             </button>
             <h2 className="text-xl font-bold mt-4">Participants & Sponsors</h2>
             {participants && participants.length > 0 && (
-              <div className="mt-4">  
+              <div className="mt-4">
                 <p>Participants</p>
                 {participants.map((participant) => (
                   <div
@@ -205,7 +228,6 @@ const PendingEvents = ({
           {event.maximumSlots}
         </p>
 
-
         <p className="text-gray-600 mb-3">
           <span className="font-semibold">Ticket Price:</span> ₹
           {event.ticketPrices}
@@ -236,7 +258,6 @@ const PendingEvents = ({
         </button>
         <button
           onClick={() => {
-
             setIsDrawerOpen(true);
             getParticipantsForEvent(event._id);
             getSponsorsForEvent(event._id);

@@ -1,16 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
 
 const ApprovedEventsSection = () => {
   const [events, setEvents] = useState([]);
   const [allEvents, setAllEvents] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [participants, setParticipants] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [sponsors, setSponsors] = useState([]);
   const [dropdownValue, setDropdownValue] = useState("all");
   const [eventsCount, setEventsCount] = useState(0);
 
   const fetchEvents = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         "http://localhost:4000/api/events/allEvents"
@@ -20,6 +23,8 @@ const ApprovedEventsSection = () => {
       setEventsCount(response.data.data.events.length);
     } catch (error) {
       console.log("Error fetching pending events", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,6 +42,7 @@ const ApprovedEventsSection = () => {
   }, [dropdownValue, allEvents]);
 
   const getSponsorsForEvent = async (eventId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
@@ -44,10 +50,13 @@ const ApprovedEventsSection = () => {
       setSponsors(response.data.data.sponsors);
     } catch (error) {
       console.log("Error fetching sponsors for event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const getParticipantsForEvent = async (eventId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
@@ -55,6 +64,8 @@ const ApprovedEventsSection = () => {
       setParticipants(response.data.data.participants);
     } catch (error) {
       console.log("Error fetching participants for event", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,23 +100,31 @@ const ApprovedEventsSection = () => {
           </div>
           <hr className="mt-2" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
-          {events.map((event) => (
-            <Event
-              key={event._id}
-              event={event}
-              onDelete={() => {}}
-              setIsDrawerOpen={setIsDrawerOpen}
-              getParticipantsForEvent={getParticipantsForEvent}
-              getSponsorsForEvent={getSponsorsForEvent}
-            />
-          ))}
-        </div>
 
-        {/* No Pending Events */}
-        {events.length === 0 && (
-          <div className="bg-white p-3 rounded-xl shadow-lg border text-center">
-            <p>No events to show.</p>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-[85vh] animate-spin">
+            <Loader size={40} />
+          </div>
+        ) : (
+          <div>
+            {events.length === 0 ? (
+              <div className="bg-white p-3 rounded-xl shadow-lg border text-center">
+                <p>No events to show.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
+                {events.map((event) => (
+                  <Event
+                    key={event._id}
+                    event={event}
+                    onDelete={() => {}}
+                    setIsDrawerOpen={setIsDrawerOpen}
+                    getParticipantsForEvent={getParticipantsForEvent}
+                    getSponsorsForEvent={getSponsorsForEvent}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -208,13 +227,13 @@ const Event = ({
         </p>
 
         <p className="text-gray-700">
-          <span className="font-semibold">Participants:</span> 
-          {" "}{event.participants.length}    
+          <span className="font-semibold">Participants:</span>{" "}
+          {event.participants.length}
         </p>
 
         <p className="text-gray-700">
-          <span className="font-semibold">Maximum Slots:</span> 
-          {" "}{event.maximumSlots}
+          <span className="font-semibold">Maximum Slots:</span>{" "}
+          {event.maximumSlots}
         </p>
 
         <p className="text-gray-700 mb-3">

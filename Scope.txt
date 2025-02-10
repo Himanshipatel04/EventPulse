@@ -14,4 +14,6 @@ Either write close or x
 
 Add loading
 
+Add contact details for sponsor
+
 Responsiveness for modal and participants panel

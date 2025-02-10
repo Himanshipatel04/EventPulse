@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaChair } from "react-icons/fa";
+import { Loader } from "lucide-react";
 
 const OrganizerProfile = () => {
   const { user } = useUser();
@@ -25,9 +26,15 @@ const OrganizerProfile = () => {
   const [viewParticipants, setViewParticipants] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [viewSponsors, setViewSponsors] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isParticipantsLoading, setIsParticipantsLoading] =
+    useState(false);
+  const [isSponsorsLoading, setIsSponsorsLoading] =
+    useState(false);
   const [sponsors, setSponsors] = useState([]);
 
   const fetchEvents = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getEventsByOrganizer/${user._id}`
@@ -35,10 +42,13 @@ const OrganizerProfile = () => {
       setEvents(response.data.data.events);
     } catch (error) {
       console.log("Error fetching events", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleUpdateEvent = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.put(
         `http://localhost:4000/api/events/updateEvent/${selectedEvent._id}`,
@@ -50,10 +60,13 @@ const OrganizerProfile = () => {
     } catch (error) {
       console.log("Error updating event", error);
       alert("Error updating event");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchEventById = async (eventId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getEventById/${eventId}`
@@ -63,6 +76,8 @@ const OrganizerProfile = () => {
     } catch (error) {
       console.log("Error fetching event", error);
       alert("Error fetching event");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,7 +89,11 @@ const OrganizerProfile = () => {
     }));
   };
 
+  console.log(events);
+
   const getParticipantsForEvent = async (eventId) => {
+    setViewParticipants(true)
+    setIsParticipantsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
@@ -83,10 +102,14 @@ const OrganizerProfile = () => {
       setParticipants(response.data.data.participants);
     } catch (error) {
       console.log("Error fetching participants", error);
+    } finally {
+      setIsParticipantsLoading(false);
     }
   };
 
   const getSponsorsForEvent = async (eventId) => {
+    setViewSponsors(true)
+    setIsSponsorsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
@@ -95,6 +118,8 @@ const OrganizerProfile = () => {
       setSponsors(response.data.data.sponsors);
     } catch (error) {
       console.log("Error fetching sponsors", error);
+    } finally {
+      setIsSponsorsLoading(false);
     }
   };
 
@@ -123,7 +148,7 @@ const OrganizerProfile = () => {
           isModalOpen ? "backdrop-blur-lg " : ""
         } 
         ${
-          viewParticipants || viewSponsors  
+          viewParticipants || viewSponsors
             ? "-translate-x-4 transition-all duration-500"
             : "translate-x-0 transition-all duration-500"
         }          
@@ -135,7 +160,7 @@ const OrganizerProfile = () => {
         </div>
 
         {/* Manage Events Section */}
-        <div className="mt-2 outline outline-gray-200 outline-1 p-4 rounded-xl">
+        <div className="mt-2 outline max-w-screen-2xl outline-gray-200 outline-1 p-4 rounded-xl">
           <div className="flex items-center justify-between border-b border-gray-200 pb-4">
             <div>
               <h2 className="text-xl font-semibold text-teal-700">
@@ -149,137 +174,139 @@ const OrganizerProfile = () => {
               <Link to="/createEvent">Create Event</Link>
             </button>
           </div>
-
           {/* Event Cards */}
-         <div className="max-h-[60vh] md:max-h-[70vh] overflow-auto scrollbar-none">
-         <div className="grid grid-cols-1 md:max-h-full md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-            {events?.map((event) => (
-              <div
-                key={event._id}
-                className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 flex flex-col justify-between h-full"
-              >
-                {/* Event Details */}
-                <div className="flex-1">
-                  {/* Title */}
-                  <h3 className="text-xl font-semibold text-teal-700 mb-2 line-clamp-2">
-                    {event.title}
-                  </h3>
-
-                  {/* Date & Time */}
-                  <div className="flex items-center text-sm text-gray-600 mb-2">
-                    <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                    <span>
-                      {new Date(event.date).toDateString()} (
-                      {event.time ?? "Time TBD"})
-                    </span>
-                  </div>
-
-                  {/* Location */}
-                  <div className="flex items-center text-sm text-gray-700 mb-2">
-                    <MapPin  className="w-4 h-4 mr-2 text-gray-500" />
-                    <span>{event.location}</span>
-                  </div>
-
-                  <div className="flex items-center text-sm text-gray-700 mb-2">
-                    <UserCircle className="w-4 h-4 mr-2 text-gray-500" />
-                    <span>{event.organizerName ?? "N/A"}</span>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-gray-700 line-clamp-3 mb-3">
-                    {event.description}
-                  </p>
-
-                  {/* Ticket Price */}
-                  <div className="flex items-center text-sm text-gray-700 mb-2">
-                    <Ticket className="w-4 h-4 mr-2 text-gray-500" />
-                    <span>₹{event.ticketPrices} /-</span>
-                  </div>
-
-                  <div className="flex items-center text-sm text-gray-700 mb-2">
-                    <FaChair className="w-4 h-4 mr-2 text-gray-500" />
-                    <span>{event.maximumSlots} </span>
-                  </div>
-
-                  {/* Event Status */}
-                  <div className="flex items-center text-sm font-semibold mb-2">
-                    {event.status === "approved" ? (
-                      <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
-                    ) : event.status === "pending" ? (
-                      <Hourglass className="w-4 h-4 mr-2 text-yellow-600" />
-                    ) : (
-                      <XCircle className="w-4 h-4 mr-2 text-red-600" />
-                    )}
-                    <span
-                      className={
-                        event.status === "approved"
-                          ? "text-green-600"
-                          : event.status === "pending"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                      }
+          <div className="w-full px-4">
+            {isLoading ? (
+              <div className="min-w-[1000px] flex items-center justify-center max-h-[60vh] md:min-h-[67vh]">
+                <Loader className="animate-spin" size={40} />
+              </div>
+            ) : (
+              <div className="max-h-[60vh] md:max-h-[67vh] overflow-auto scrollbar-none w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 w-full">
+                  {events?.map((event) => (
+                    <div
+                      key={event._id}
+                      className="bg-white p-4 rounded-lg shadow-lg border border-gray-200 flex flex-col justify-between h-full w-full"
                     >
-                      {event.status.charAt(0).toUpperCase() +
-                        event.status.slice(1)}
-                    </span>
-                  </div>
+                      {/* Event Details */}
+                      <div className="flex-1">
+                        {/* Title */}
+                        <h3 className="text-xl font-semibold text-teal-700 mb-2 line-clamp-2">
+                          {event.title}
+                        </h3>
 
-                  {/* Participants & Sponsors */}
-                  <div className="flex justify-between text-sm text-gray-700 mb-4">
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>
-                        {event.participants?.length || 0} Participants
-                      </span>
+                        {/* Date & Time */}
+                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                          <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                          <span>
+                            {new Date(event.date).toDateString()} (
+                            {event.time ?? "Time TBD"})
+                          </span>
+                        </div>
+
+                        {/* Location */}
+                        <div className="flex items-center text-sm text-gray-700 mb-2">
+                          <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+                          <span>{event.location}</span>
+                        </div>
+
+                        <div className="flex items-center text-sm text-gray-700 mb-2">
+                          <UserCircle className="w-4 h-4 mr-2 text-gray-500" />
+                          <span>{event.organizerName ?? "N/A"}</span>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-sm text-gray-700 line-clamp-3 mb-3">
+                          {event.description}
+                        </p>
+
+                        {/* Ticket Price */}
+                        <div className="flex items-center text-sm text-gray-700 mb-2">
+                          <Ticket className="w-4 h-4 mr-2 text-gray-500" />
+                          <span>₹{event.ticketPrices} /-</span>
+                        </div>
+
+                        <div className="flex items-center text-sm text-gray-700 mb-2">
+                          <FaChair className="w-4 h-4 mr-2 text-gray-500" />
+                          <span>{event.maximumSlots} </span>
+                        </div>
+
+                        {/* Event Status */}
+                        <div className="flex items-center text-sm font-semibold mb-2">
+                          {event.status === "approved" ? (
+                            <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
+                          ) : event.status === "pending" ? (
+                            <Hourglass className="w-4 h-4 mr-2 text-yellow-600" />
+                          ) : (
+                            <XCircle className="w-4 h-4 mr-2 text-red-600" />
+                          )}
+                          <span
+                            className={
+                              event.status === "approved"
+                                ? "text-green-600"
+                                : event.status === "pending"
+                                ? "text-yellow-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {event.status.charAt(0).toUpperCase() +
+                              event.status.slice(1)}
+                          </span>
+                        </div>
+
+                        {/* Participants & Sponsors */}
+                        <div className="flex justify-between text-sm text-gray-700 mb-4">
+                          <div className="flex items-center">
+                            <Users className="w-4 h-4 mr-2 text-gray-500" />
+                            <span>
+                              {event.participants?.length || 0} Participants
+                            </span>
+                          </div>
+                          <div className="flex items-center">
+                            <Handshake className="w-4 h-4 mr-2 text-gray-500" />
+                            <span>{event.sponsors?.length || 0} Sponsors</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Fixed Bottom Buttons */}
+                      <div className="mt-auto flex flex-col gap-2">
+                        <button
+                          onClick={() => {
+                            setViewParticipants(true);
+                            getParticipantsForEvent(event._id);
+                          }}
+                          className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                        >
+                          <Users className="w-4 h-4 mr-2" /> View Participants
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setViewSponsors(true);
+                            getSponsorsForEvent(event._id);
+                          }}
+                          className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                        >
+                          <Handshake className="w-4 h-4 mr-2" /> View Sponsors
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            fetchEventById(event._id);
+                          }}
+                          className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
+                        >
+                          <Pencil className="w-4 h-4 mr-2" /> Update Event
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center">
-                      <Handshake className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>{event.sponsors?.length || 0} Sponsors</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fixed Bottom Buttons */}
-                <div className="mt-auto flex flex-col gap-2">
-                  <button
-                    onClick={() => {
-                      setViewParticipants(true);
-                      getParticipantsForEvent(event._id);
-                    }}
-                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
-                  >
-                    <Users className="w-4 h-4 mr-2" /> View Participants
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setViewSponsors(true);
-                      getSponsorsForEvent(event._id);
-                    }}
-                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
-                  >
-                    <Handshake className="w-4 h-4 mr-2" /> View Sponsors
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(true);
-                      fetchEventById(event._id);
-                    }}
-                    className="bg-teal-500 text-white py-2 rounded-lg flex items-center justify-center hover:bg-teal-600 transition"
-                  >
-                    <Pencil className="w-4 h-4 mr-2" /> Update Event
-                  </button>
+                  ))}
                 </div>
               </div>
-            ))}
+            )}
           </div>
-         </div>
-
-          {/* View All Events Button */}
-          {/* <button className="mt-6 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-            View All Events
-          </button> */}
         </div>
       </div>
 
@@ -329,10 +356,10 @@ const OrganizerProfile = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Maximum Slots" 
+                  placeholder="Maximum Slots"
                   value={selectedEvent?.maximumSlots}
                   name="maximumSlots"
-                  onChange={handleInputChange}                  
+                  onChange={handleInputChange}
                   className="border border-teal-400 rounded-md p-2 text-black focus:outline-none focus:ring-1 focus:ring-teal-500"
                 />
                 <input
@@ -380,7 +407,7 @@ const OrganizerProfile = () => {
     outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
     transition-all duration-500 ease-in-out
     ${
-      viewParticipants
+      viewParticipants || isParticipantsLoading
         ? "block translate-y-0 scale-100 visible"
         : "hidden translate-y-5 scale-95 invisible"
     }
@@ -397,7 +424,11 @@ const OrganizerProfile = () => {
             X
           </button>
         </div>
-        {participants?.length ? (
+        {isParticipantsLoading ? (
+          <div className="flex items-center p-3 justify-center min-h-[">
+           <p className="text-black text-sm">Loading....</p>
+          </div>
+        ) : participants?.length ? (
           participants.map((value, index) => (
             <p
               className="text-gray-600 pb-1 mt-2 border-b border-gray-200"
@@ -412,11 +443,11 @@ const OrganizerProfile = () => {
       </div>
 
       <div
-        className={`transform max-h-96 overflow-auto min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
+        className={`transform ml-2 max-h-96 overflow-auto min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
     outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
     transition-all duration-500 ease-in-out
     ${
-      viewSponsors
+      viewSponsors || isSponsorsLoading
         ? "block translate-y-0 scale-100 visible"
         : "hidden translate-y-5 scale-95 invisible"
     }
@@ -433,13 +464,17 @@ const OrganizerProfile = () => {
             X
           </button>
         </div>
-        {sponsors?.length ? (
+        {isSponsorsLoading  ? (
+          <div className="flex items-center p-3 justify-center min-h-[">
+           <p className="text-black text-sm">Loading....</p>
+          </div>
+        ) : sponsors?.length ? (
           sponsors.map((value, index) => (
             <p
               className="text-gray-600 pb-1 mt-2 border-b border-gray-200"
               key={index}
             >
-              {value.name}
+              {value.sponsorName}
             </p>
           ))
         ) : (
