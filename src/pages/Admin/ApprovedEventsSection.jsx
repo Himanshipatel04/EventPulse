@@ -48,12 +48,15 @@ const ApprovedEventsSection = () => {
         `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
       );
       setSponsors(response.data.data.sponsors);
+      
     } catch (error) {
       console.log("Error fetching sponsors for event", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  console.log(sponsors)
 
   const getParticipantsForEvent = async (eventId) => {
     setIsLoading(true);
@@ -72,6 +75,17 @@ const ApprovedEventsSection = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  const onDelete = async (eventId) => {
+    try {
+      await axios.delete(
+        `http://localhost:4000/api/admin/deleteEvent/${eventId}`
+      );
+      fetchEvents();
+    } catch (error) {
+      console.log("Error deleting event", error);
+    }
+  };
 
   return (
     <div>
@@ -112,12 +126,12 @@ const ApprovedEventsSection = () => {
                 <p>No events to show.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-4">
                 {events.map((event) => (
                   <Event
                     key={event._id}
                     event={event}
-                    onDelete={() => {}}
+                    onDelete={onDelete}
                     setIsDrawerOpen={setIsDrawerOpen}
                     getParticipantsForEvent={getParticipantsForEvent}
                     getSponsorsForEvent={getSponsorsForEvent}
@@ -165,7 +179,7 @@ const ApprovedEventsSection = () => {
                       key={sponsor._id}
                       className="bg-gray-700 p-2 rounded-md mt-2"
                     >
-                      <p className="text-gray-400">{sponsor.name}</p>
+                      <p className="text-gray-400">{sponsor.sponsorName}</p>
                     </div>
                   ))}
                 </div>
@@ -229,6 +243,10 @@ const Event = ({
         <p className="text-gray-700">
           <span className="font-semibold">Participants:</span>{" "}
           {event.participants.length}
+        </p>
+        <p className="text-gray-700">
+          <span className="font-semibold">Sponsors:</span>{" "}
+          {event.sponsors.length}
         </p>
 
         <p className="text-gray-700">

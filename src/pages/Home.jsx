@@ -188,7 +188,7 @@ const Home = () => {
 
                     {/* Organizer */}
                     {(user?.role === "Organizer" || user?.role === "Admin") && (
-                      <Link to={`/event/${event._id}`} className="w-full">
+                      <Link to={`/event-details/${event._id}`} className="w-full">
                         <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
                           View Event Details
                         </button>

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const CreateEvent = () => {
   const { user } = useUser();
@@ -53,7 +54,7 @@ const CreateEvent = () => {
         formData
       );
       console.log(response.data);
-      navigate("/organizer-profile");
+      navigate("/organizer-dashboard");
       alert("Event created successfully");
     } catch (error) {
       console.error("Error creating event", error);

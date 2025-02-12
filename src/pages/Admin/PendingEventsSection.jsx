@@ -29,6 +29,7 @@ const PendingEventsSection = () => {
       const response = await axios.get(
         `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
       );
+      console.log(response.data.data)
       setSponsors(response.data.data.sponsors);
     } catch (error) {
       console.log("Error fetching sponsors for event", error);
@@ -36,6 +37,7 @@ const PendingEventsSection = () => {
       setIsLoading(false);
     }
   };
+
 
   const getParticipantsForEvent = async (eventId) => {
     setIsLoading(true);
