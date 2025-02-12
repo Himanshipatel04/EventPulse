@@ -22,6 +22,7 @@ import AttendeeProfile from "./pages/Attendee/AttendeeProfile";
 import AdminProfile from "./pages/Admin/AdminProfile";
 import SponsorProfile from "./pages/Sponsor/SponsorProfile";
 import SponsorEvent from "./pages/Sponsor/SponsorEvent";
+import ManageSponsors from "./pages/Organizer/ManageSponsors";
 
 const App = () => {
   return (
@@ -54,6 +55,10 @@ const App = () => {
         <Route
           path="/sponsor/:eventId/:eventTitle"
           element={<SponsorEvent />}
+        />
+        <Route
+          path="/manageSponsors"
+          element={<ManageSponsors />}
         />
         {/* Dashboard Routes */}
         <Route path="/organizer-dashboard" element={<OrganizerProfile />} />

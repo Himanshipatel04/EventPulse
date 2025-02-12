@@ -170,9 +170,14 @@ const OrganizerProfile = () => {
                 View, edit, or delete your events.
               </p>
             </div>
-            <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+           <div>
+           <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+              <Link to="/manageSponsors">Manage Sponsors</Link>
+            </button>
+            <button className="bg-teal-500 ml-4 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
               <Link to="/createEvent">Create Event</Link>
             </button>
+           </div>
           </div>
           {/* Event Cards */}
           <div className="w-full px-4">
@@ -308,6 +313,7 @@ const OrganizerProfile = () => {
             )}
           </div>
         </div>
+       
       </div>
 
       {/* Modal for Event Update */}
