@@ -52,7 +52,7 @@ const Home = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative text-white text-center py-44 md:py-36 overflow-hidden">
+      <section className="relative text-white text-center py-48 md:py-36 overflow-hidden">
         {/* Blurred Background */}
         <div
           className="absolute inset-0 bg-cover bg-center blur-sm "

@@ -2,8 +2,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("Attendee");
@@ -20,9 +23,12 @@ const Signup = () => {
         { email, password, role }
       );
       console.log(response);
-     
+      toast.success("Registered successfully!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
-      
+      toast.error("Error while registering!");
       console.log("Error while registering user", error);
     }
   };
@@ -104,6 +110,7 @@ const Signup = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

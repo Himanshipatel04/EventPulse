@@ -23,6 +23,7 @@ import AdminProfile from "./pages/Admin/AdminProfile";
 import SponsorProfile from "./pages/Sponsor/SponsorProfile";
 import SponsorEvent from "./pages/Sponsor/SponsorEvent";
 import ManageSponsors from "./pages/Organizer/ManageSponsors";
+import ForgotPassword from "./auth/ForgotPassword";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
 
         {/* Event Routes */}
         <Route path="/createEvent" element={<CreateEvent />} />

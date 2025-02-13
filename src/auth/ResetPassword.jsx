@@ -1,39 +1,46 @@
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const ResetPassword = () => {
-  const [status, setStatus] = useState("");
+  const { navigate } = useNavigate();               
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false); // Loading state
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token"); // Extract token from URL
+  // console.log(token)
 
   const handleResetPassword = async () => {
     if (!password) {
-      setErrorMessage("Password cannot be empty.");
+      toast.error("Password cannot be empty.");
       return;
     }
 
     if (token) {
       try {
         setLoading(true);
-        setErrorMessage("");
+        console.log("hello");
         const response = await axios.post(
-          "http://localhost:4000/api/user/resetPassword",
+          "http://localhost:4000/api/users/resetPassword",
           { token, password }
         );
-        setStatus(response.data.message);
+        console.log(response);
+        toast.success(response.data.data);
         setLoading(false);
+        setTimeout(() => {            
+          navigate("/login");
+        }
+        , 1000);  
       } catch (error) {
-        setErrorMessage(
+        console.log("Error while resetting password", error);
+        toast.error(
           error.response ? error.response.data.message : "Something went wrong"
         );
         setLoading(false);
       }
     } else {
-      setErrorMessage("No token provided.");
+      toast.error("Invalid token. Please try again.");
     }
   };
 
@@ -58,20 +65,15 @@ const ResetPassword = () => {
         </div>
         <button
           onClick={handleResetPassword}
-          disabled={loading || !password}
+          // disabled={loading || !password}
           className={`w-full py-2 mt-4 ${
-            loading || !password
-              ? "bg-teal-600 cursor-not-allowed"
-              : "bg-teal-700"
+            loading || !password ? "bg-teal-600 " : "bg-teal-700"
           } text-white rounded-md hover:bg-teal-800 focus:outline-none`}
         >
-          {loading ? "Processing..." : "Reset Password"}
+          Reset Password
         </button>
-        {status && <p className="mt-4 text-center text-green-700">{status}</p>}
-        {errorMessage && (
-          <p className="mt-4 text-center text-red-600">{errorMessage}</p>
-        )}
       </div>
+      <ToastContainer />
     </div>
   );
 };

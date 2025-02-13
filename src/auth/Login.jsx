@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Font Awesome Icons
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,38 +26,32 @@ const Login = () => {
         { email, password }
       );
       console.log(response.data.data, "..");
+      toast.success("Logged in successfully!");
       const userWithExpiry = {
         user: response.data.data, // The actual user data
         timestamp: Date.now(), // Current time in milliseconds
       };
 
       localStorage.setItem("user", JSON.stringify(userWithExpiry));
-      navigate("/");
 
       setTimeout(() => {
+        navigate("/");
         window.location.reload();
       }, 1000);
     } catch (error) {
       console.log("Error while logging in!", error);
+      toast.error(error.response.data.message || "Error while logging in!");
     }
   };
 
-  const handleForgotPassword = async (e) => {
-    e.preventDefault();
-    // Add forgot password logic here
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/forgotPassword"
-      );
-    } catch (error) {
-      console.log("Error while forgetting password", error);
-    }
-  };
+
 
   return (
     <div className="flex items-center justify-center h-screen py-6 pt-20 bg-teal-50">
-      <div className="w-full max-w-80 md:max-w-md p-8 bg-white rounded-lg shadow-xl outline
-       outline-2 outline-teal-500">
+      <div
+        className="w-full max-w-80 md:max-w-md p-8 bg-white rounded-lg shadow-xl outline
+       outline-2 outline-teal-500"
+      >
         <h2 className="text-4xl font-semibold text-center text-teal-700 mb-8">
           Event Pulse
         </h2>
@@ -121,8 +116,8 @@ const Login = () => {
           </button>
           <div className="flex justify-between mt-4">
             <Link
-              to="/resetPassword"
-              onClick={handleForgotPassword}
+              to="/forgotPassword"
+              // onClick={handleForgotPassword}
               className="text-sm text-teal-700 hover:underline hover:text-teal-950"
             >
               Forgot Password?
@@ -137,6 +132,7 @@ const Login = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Assuming you're using React Router for navigation
 import { useUser } from "../context/UserContext";
 import { IoMenu } from "react-icons/io5";
+import { toast, ToastContainer } from "react-toastify";
 
 const Header = () => {
   const { user } = useUser();
@@ -26,8 +27,9 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate("/");
+    toast.success("Logged out successfully!");
     setTimeout(() => {
+      navigate("/");
       window.location.reload();
     }, 1000);
   };
@@ -89,8 +91,8 @@ const Header = () => {
               to={
                 user.role === "Organizer"
                   ? "/organizer-dashboard"
-                    : user.role === "Sponsor"
-                    ? "/sponsor-dashboard"
+                  : user.role === "Sponsor"
+                  ? "/sponsor-dashboard"
                   : user.role === "Attendee"
                   ? "/attendee-dashboard"
                   : "/admin-dashboard"
@@ -99,8 +101,8 @@ const Header = () => {
             >
               {user.role === "Organizer"
                 ? "View Profile"
-                  : user.role === "Sponsor"
-                  ? "Sponsor Profile"
+                : user.role === "Sponsor"
+                ? "Sponsor Profile"
                 : user.role === "Attendee"
                 ? "Dashboard"
                 : "Admin Dashboard"}
@@ -172,6 +174,8 @@ const Header = () => {
                     ? "/organizer-profile"
                     : user.role === "Attendee"
                     ? "/attendee-dashboard"
+                    : user.role === "Sponsor"
+                    ? "/sponsor-dashboard"
                     : "/admin-dashboard"
                 }
                 className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
@@ -180,6 +184,8 @@ const Header = () => {
                   ? "View Profile"
                   : user.role === "Attendee"
                   ? "Dashboard"
+                  : user.role === "Sponsor"
+                  ? "Sponsor Profile"
                   : "Admin Dashboard"}
               </Link>
               <Link
@@ -192,6 +198,7 @@ const Header = () => {
           ) : null}
         </div>
       </div>
+      <ToastContainer />
     </header>
   );
 };
