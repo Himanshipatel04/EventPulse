@@ -27,10 +27,8 @@ const OrganizerProfile = () => {
   const [participants, setParticipants] = useState([]);
   const [viewSponsors, setViewSponsors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isParticipantsLoading, setIsParticipantsLoading] =
-    useState(false);
-  const [isSponsorsLoading, setIsSponsorsLoading] =
-    useState(false);
+  const [isParticipantsLoading, setIsParticipantsLoading] = useState(false);
+  const [isSponsorsLoading, setIsSponsorsLoading] = useState(false);
   const [sponsors, setSponsors] = useState([]);
 
   const fetchEvents = async () => {
@@ -92,7 +90,7 @@ const OrganizerProfile = () => {
   console.log(events);
 
   const getParticipantsForEvent = async (eventId) => {
-    setViewParticipants(true)
+    setViewParticipants(true);
     setIsParticipantsLoading(true);
     try {
       const response = await axios.get(
@@ -108,7 +106,7 @@ const OrganizerProfile = () => {
   };
 
   const getSponsorsForEvent = async (eventId) => {
-    setViewSponsors(true)
+    setViewSponsors(true);
     setIsSponsorsLoading(true);
     try {
       const response = await axios.get(
@@ -170,14 +168,14 @@ const OrganizerProfile = () => {
                 View, edit, or delete your events.
               </p>
             </div>
-           <div>
-           <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-              <Link to="/manageSponsors">Manage Sponsors</Link>
-            </button>
-            <button className="bg-teal-500 ml-4 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-              <Link to="/createEvent">Create Event</Link>
-            </button>
-           </div>
+            <div>
+              <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+                <Link to="/manageSponsors">Manage Sponsors</Link>
+              </button>
+              <button className="bg-teal-500 ml-4 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+                <Link to="/createEvent">Create Event</Link>
+              </button>
+            </div>
           </div>
           {/* Event Cards */}
           <div className="w-full px-4">
@@ -313,7 +311,6 @@ const OrganizerProfile = () => {
             )}
           </div>
         </div>
-       
       </div>
 
       {/* Modal for Event Update */}
@@ -432,7 +429,7 @@ const OrganizerProfile = () => {
         </div>
         {isParticipantsLoading ? (
           <div className="flex items-center p-3 justify-center min-h-[">
-           <p className="text-black text-sm">Loading....</p>
+            <p className="text-black text-sm">Loading....</p>
           </div>
         ) : participants?.length ? (
           participants.map((value, index) => (
@@ -470,9 +467,9 @@ const OrganizerProfile = () => {
             X
           </button>
         </div>
-        {isSponsorsLoading  ? (
+        {isSponsorsLoading ? (
           <div className="flex items-center p-3 justify-center min-h-[">
-           <p className="text-black text-sm">Loading....</p>
+            <p className="text-black text-sm">Loading....</p>
           </div>
         ) : sponsors?.length ? (
           sponsors.map((value, index) => (

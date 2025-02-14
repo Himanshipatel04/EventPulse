@@ -20,6 +20,9 @@ const SponsorProfile = () => {
   const { user } = useUser();
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isParticipantsLoading, setIsParticipantsLoading] = useState(false);
+  const [viewParticipants, setViewParticipants] = useState(false);
+  const [participants, setParticipants] = useState([]);
 
   // console.log(user);
 
@@ -35,6 +38,22 @@ const SponsorProfile = () => {
       console.log("Error fetching events for sponsor: ", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const getParticipantsForEvent = async (eventId) => {
+    setViewParticipants(true);
+    setIsParticipantsLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+      );
+      console.log(response.data.data.participants);
+      setParticipants(response.data.data.participants);
+    } catch (error) {
+      console.log("Error fetching participants", error);
+    } finally {
+      setIsParticipantsLoading(false);
     }
   };
 
@@ -54,14 +73,22 @@ const SponsorProfile = () => {
     );
   }
   return (
-    <div className="mt-28 flex flex-col items-center justify-start min-h-[85vh]">
-      <div className="text-center">
-        <p className="text-5xl font-bold text-teal-700">Welcome !</p>
-        <p className="mt-1 text-teal-600 text-2xl tracking-tighter">
-          {user.email}
-        </p>
-      </div>
-      <div className="w-full max-w-7xl">
+    <div className="min-h-screen text-white p-0 md:p-6 mt-12 flex items-start justify-center">
+      <div
+        className={`max-w-8xl  text-gray-900 p-4 md:p-6 
+        ${
+          viewParticipants 
+            ? "-translate-x-4 transition-all duration-500"
+            : "translate-x-0 transition-all duration-500"
+        }          
+        `}
+      >
+        {/* Organizer Profile Info */}
+        <div className="text-center">
+          <p className="text-5xl font-bold text-teal-700">Welcome !</p>
+        </div>
+
+        {/* Manage Events Section */}
         <div className="mt-2 outline max-w-screen-2xl outline-gray-200 outline-1 p-4 rounded-xl">
           <div className="flex items-center justify-between border-b border-gray-200 pb-4">
             <div>
@@ -72,7 +99,14 @@ const SponsorProfile = () => {
                 View, edit, or delete your events.
               </p>
             </div>
-           
+            <div>
+              <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+                <Link to="/manageSponsors">Manage Sponsors</Link>
+              </button>
+              <button className="bg-teal-500 ml-4 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+                <Link to="/createEvent">Create Event</Link>
+              </button>
+            </div>
           </div>
           {/* Event Cards */}
           <div className="w-full px-4">
@@ -149,7 +183,7 @@ const SponsorProfile = () => {
                                 : "text-red-600"
                             }
                           >
-                            {event.status.charAt(0).toUpperCase() +
+                            {event.eventId.status.charAt(0).toUpperCase() +
                               event.eventId.status.slice(1)}
                           </span>
                         </div>
@@ -159,15 +193,12 @@ const SponsorProfile = () => {
                           <div className="flex items-center">
                             <Users className="w-4 h-4 mr-2 text-gray-500" />
                             <span>
-                              {event.eventId.participants?.length || 0}{" "}
-                              Participants
+                              {event.eventId.participants?.length || 0} Participants
                             </span>
                           </div>
                           <div className="flex items-center">
                             <Handshake className="w-4 h-4 mr-2 text-gray-500" />
-                            <span>
-                              {event.eventId.sponsors?.length || 0} Sponsors
-                            </span>
+                            <span>{event.eventId.sponsors?.length || 0} Sponsors</span>
                           </div>
                         </div>
                       </div>
@@ -183,6 +214,8 @@ const SponsorProfile = () => {
                         >
                           <Users className="w-4 h-4 mr-2" /> View Participants
                         </button>
+
+                    
                       </div>
                     </div>
                   ))}
@@ -192,6 +225,51 @@ const SponsorProfile = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal for Event Update */}
+     
+
+      <div
+        className={`transform max-h-96 overflow-auto min-w-[250px] max-w-[90%] h-fit px-4 py-3 mt-10 
+    outline outline-2 rounded-md outline-teal-500 bg-white shadow-lg
+    transition-all duration-500 ease-in-out
+    ${
+      viewParticipants || isParticipantsLoading
+        ? "block translate-y-0 scale-100 visible"
+        : "hidden translate-y-5 scale-95 invisible"
+    }
+  `}
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-teal-700">
+            {`Participants (${participants?.length})`}
+          </h2>
+          <button
+            onClick={() => setViewParticipants(false)}
+            className="bg-red-500 flex items-center justify-center rounded-full h-6 w-6 text-center"
+          >
+            X
+          </button>
+        </div>
+        {isParticipantsLoading ? (
+          <div className="flex items-center p-3 justify-center min-h-[">
+            <p className="text-black text-sm">Loading....</p>
+          </div>
+        ) : participants?.length ? (
+          participants.map((value, index) => (
+            <p
+              className="text-gray-600 pb-1 mt-2 border-b border-gray-200"
+              key={index}
+            >
+              {value.email}
+            </p>
+          ))
+        ) : (
+          <p className="text-gray-400">No participants found!</p>
+        )}
+      </div>
+
+      
     </div>
   );
 };
