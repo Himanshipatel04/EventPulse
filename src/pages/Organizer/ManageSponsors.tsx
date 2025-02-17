@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useUser } from '../../context/UserContext';
+import { BASE_URL } from '../../common/API_URL';
 
 const ManageSponsors = () => {
 
@@ -22,7 +23,7 @@ const ManageSponsors = () => {
             setIsLoading(true);
             try {
                 if (user) {
-                    const response = await axios.get(`http://localhost:4000/api/sponsor/getSponsorsForOrganizers/${user?._id}`);
+                    const response = await axios.get(`${BASE_URL}/sponsor/getSponsorsForOrganizers/${user?._id}`);
                     setSponsors(response.data.data)
                     // console.log(response.data.data);
                     setIsLoading(false);
@@ -37,7 +38,7 @@ const ManageSponsors = () => {
 
     const approveSponsor = async (sponsorId, email) => {
         try {
-            const response = await axios.put(`http://localhost:4000/api/sponsor/updateSponsor/${sponsorId}`, { status: "approved", email: email });
+            const response = await axios.put(`${BASE_URL}/sponsor/updateSponsor/${sponsorId}`, { status: "approved", email: email });
             console.log(response.data.data);
             // setIsLoading(false);                         
         } catch (error) {
@@ -48,7 +49,7 @@ const ManageSponsors = () => {
 
     const rejectSponsor = async (sponsorId, email) => {
         try {
-            const response = await axios.put(`http://localhost:4000/api/sponsor/updateSponsor/${sponsorId}`, { status: "rejected", email: email });
+            const response = await axios.put(`${BASE_URL}/sponsor/updateSponsor/${sponsorId}`, { status: "rejected", email: email });
             console.log(response.data.data);
             // setIsLoading(false);                         
         } catch (error) {
@@ -56,9 +57,6 @@ const ManageSponsors = () => {
             // setIsLoading(false);
         }
     }
-
-
-    console.log(sponsors)
 
     return (
         <div className='min-h-[87vh]  p-0 md:p-6 mt-24 flex items-start justify-center'>

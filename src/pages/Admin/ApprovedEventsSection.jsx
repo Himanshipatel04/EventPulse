@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
+import { BASE_URL } from "../../common/API_URL";
 
 const ApprovedEventsSection = () => {
   const [events, setEvents] = useState([]);
@@ -16,7 +17,7 @@ const ApprovedEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/events/allEvents"
+        `${BASE_URL}/events/allEvents`
       );
       setEvents(response.data.data.events);
       setAllEvents(response.data.data.events);

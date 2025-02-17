@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader, Loader2 } from "lucide-react";
+import { BASE_URL } from "../../common/API_URL";  
 
 const PendingEventsSection = () => {
   const [pendingEvents, setPendingEvents] = useState([]);
@@ -13,7 +14,7 @@ const PendingEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/admin/getPendingEvents"
+        `${BASE_URL}/admin/getPendingEvents`
       );
       setPendingEvents(response.data.data.events);
     } catch (error) {
@@ -27,7 +28,7 @@ const PendingEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
+       `${BASE_URL}/events/getSponsorsForEvent/${eventId}`
       );
       console.log(response.data.data)
       setSponsors(response.data.data.sponsors);
@@ -43,7 +44,7 @@ const PendingEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+        `${BASE_URL}/events/getParticipantsForEvent/${eventId}`
       );
       setParticipants(response.data.data.participants);
     } catch (error) {
@@ -57,7 +58,7 @@ const PendingEventsSection = () => {
     setIsLoading(true);
     try {
       await axios.put(
-        `http://localhost:4000/api/admin/approveEvent/${eventId}`
+        `${BASE_URL}/admin/approveEvent/${eventId}`
       );
       fetchPendingEvents();
     } catch (error) {
@@ -70,7 +71,7 @@ const PendingEventsSection = () => {
   const onReject = async (eventId) => {
     setIsLoading(true);
     try {
-      await axios.put(`http://localhost:4000/api/admin/rejectEvent/${eventId}`);
+      await axios.put(`${BASE_URL}/admin/rejectEvent/${eventId}`);
       fetchPendingEvents();
     } catch (error) {
       console.error("Error rejecting event", error);
@@ -83,7 +84,7 @@ const PendingEventsSection = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `http://localhost:4000/api/admin/deleteEvent/${eventId}`
+        `${BASE_URL}/admin/deleteEvent/${eventId}`
       );
       fetchPendingEvents();
     } catch (error) {

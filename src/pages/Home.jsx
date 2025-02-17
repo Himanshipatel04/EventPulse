@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import { useUser } from "../context/UserContext";
 import { Calendar, MapPin, Users, BadgeCheck } from "lucide-react";
 import axios from "axios";
+import { BASE_URL } from "../common/API_URL";
 
 const Home = () => {
   const carouselSettings = {
@@ -36,7 +37,7 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/events/allEvents"
+          `${BASE_URL}/events/allEvents`
         );
         console.log(response);
         setUpcomingEvents(response.data.data.events);

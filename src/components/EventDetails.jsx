@@ -13,6 +13,7 @@ import {
 } from "lucide-react"; // Icons for better UI
 import { FaChair } from "react-icons/fa";
 import { useUser } from "../context/UserContext";
+import { BASE_URL } from "../common/API_URL";
 
 const EventDetails = () => {
   const { eventId } = useParams();
@@ -23,7 +24,7 @@ const EventDetails = () => {
     const fetchEvent = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/events/getEventById/${eventId}`
+          `${BASE_URL}/events/getEventById/${eventId}`
         );
         setEvent(response.data.data.event);
       } catch (error) {

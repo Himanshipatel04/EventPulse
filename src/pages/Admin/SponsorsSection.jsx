@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Eye, Loader, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";            
+import { BASE_URL } from "../../common/API_URL";
 
 const SponsorsSection = () => {
   const [sponsors, setSponsors] = useState([]);
@@ -22,7 +23,7 @@ const SponsorsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/sponsor/getSponsors"
+        `${BASE_URL}/sponsor/getSponsors`
       );
       console.log(response.data.data);
       setSponsors(response.data.data);
@@ -39,7 +40,7 @@ const SponsorsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/users/getUsers"
+        `${BASE_URL}/users/getUsers`
       );
       setUsers(response.data.data);
       console.log(response.data.data);
@@ -54,7 +55,7 @@ const SponsorsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/events/allEvents"
+        `${BASE_URL}/events/allEvents`
       );
       setEvents(response.data.data.events);
     } catch (error) {
@@ -69,7 +70,7 @@ const SponsorsSection = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `http://localhost:4000/api/sponsor/deleteSponsor/${id}`
+        `${BASE_URL}/sponsor/deleteSponsor/${id}`
       );
       fetchSponsors();
     } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader, Trash2 } from "lucide-react";
+import { BASE_URL } from "../../common/API_URL";
 
 const UsersSection = () => {
   const [users, setUsers] = useState([]);
@@ -17,7 +18,7 @@ const UsersSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/users/getUsers"
+        `${BASE_URL}/users/getUsers`
       );
       setUsers(response.data.data);
       setAllUsers(response.data.data);
@@ -44,7 +45,7 @@ const UsersSection = () => {
   const onDeleteUser = async (id) => {
     setIsLoading(true);
     try {
-      await axios.delete(`http://localhost:4000/api/users/deleteUser/${id}`);
+      await axios.delete(`${BASE_URL}/users/deleteUser/${id}`);
       fetchUsers();
     } catch (error) {
       console.error("Error deleting user", error);

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // Import useParams to access URL params
 import { useUser } from "../context/UserContext";
+import { BASE_URL } from "../common/API_URL";
 
 const RegisterForEvent = () => {
   // Get event name and event ID from URL params
@@ -37,7 +38,7 @@ const RegisterForEvent = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/events/registerInEvent",
+       `${BASE_URL}/events/registerInEvent`,
         formData
       );
       console.log(response);

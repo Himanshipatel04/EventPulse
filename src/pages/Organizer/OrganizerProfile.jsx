@@ -16,9 +16,11 @@ import {
 import { Link } from "react-router-dom";
 import { FaChair } from "react-icons/fa";
 import { Loader } from "lucide-react";
+import { BASE_URL } from "../../common/API_URL";
 
 const OrganizerProfile = () => {
   const { user } = useUser();
+
 
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +37,7 @@ const OrganizerProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getEventsByOrganizer/${user._id}`
+        `${BASE_URL}/events/getEventsByOrganizer/${user._id}`
       );
       setEvents(response.data.data.events);
     } catch (error) {
@@ -49,7 +51,7 @@ const OrganizerProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/events/updateEvent/${selectedEvent._id}`,
+        `${BASE_URL}/events/updateEvent/${selectedEvent._id}`,
         selectedEvent
       );
       console.log(response.data);
@@ -67,7 +69,7 @@ const OrganizerProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getEventById/${eventId}`
+        `${BASE_URL}/events/getEventById/${eventId}`
       );
       console.log(response.data.data.event);
       setSelectedEvent(response.data.data.event);
@@ -94,7 +96,7 @@ const OrganizerProfile = () => {
     setIsParticipantsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+        `${BASE_URL}/events/getParticipantsForEvent/${eventId}`
       );
       console.log(response.data.data.participants);
       setParticipants(response.data.data.participants);
@@ -110,7 +112,7 @@ const OrganizerProfile = () => {
     setIsSponsorsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
+        `${BASE_URL}/events/getSponsorsForEvent/${eventId}`
       );
       console.log(response.data.data.sponsors);
       setSponsors(response.data.data.sponsors);

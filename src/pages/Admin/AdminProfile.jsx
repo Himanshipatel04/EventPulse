@@ -6,6 +6,7 @@ import PendingEventsSection from "./PendingEventsSection";
 import axios from "axios";
 import { useUser } from "../../context/UserContext";
 import { Users, Calendar, Handshake, Hourglass } from "lucide-react";
+import { BASE_URL } from "../../common/API_URL";
 
 const tabIcons = {
   users: <Users size={18} />,
@@ -21,9 +22,7 @@ const AdminProfile = () => {
 
   const fetchPendingEvents = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:4000/api/admin/getPendingEvents"
-      );
+      const response = await axios.get(`${BASE_URL}/admin/getPendingEvents`);
       setPendingEvents(response.data.data.events.length);
     } catch (error) {
       console.log("Error fetching pending events", error);

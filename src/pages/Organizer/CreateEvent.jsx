@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../../common/API_URL";
 
 const CreateEvent = () => {
   const { user } = useUser();
@@ -24,7 +25,7 @@ const CreateEvent = () => {
     const fetchEvents = async () => {
       try {
         const events = await axios.get(
-          "http://localhost:4000/api/events/allEvents"
+          `${BASE_URL}/events/allEvents`
         );
         console.log(events);
       } catch (error) {
@@ -50,7 +51,7 @@ const CreateEvent = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/events/createEvent",
+        `${BASE_URL}/events/createEvent`,
         formData
       );
       console.log(response.data);
