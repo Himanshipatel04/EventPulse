@@ -100,11 +100,9 @@ const SponsorProfile = () => {
               </p>
             </div>
             <div>
-              <button className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-                <Link to="/manageSponsors">Manage Sponsors</Link>
-              </button>
+             
               <button className="bg-teal-500 ml-4 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
-                <Link to="/createEvent">Create Event</Link>
+                <Link to="/">View Events</Link>
               </button>
             </div>
           </div>
