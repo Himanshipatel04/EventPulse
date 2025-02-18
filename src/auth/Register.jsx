@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../common/API_URL";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -18,10 +19,11 @@ const Signup = () => {
       alert("Password must be of atleast 6 characters!");
     }
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/register",
-        { email, password, role }
-      );
+      const response = await axios.post(`${BASE_URL}/users/register`, {
+        email,
+        password,
+        role,
+      });
       console.log(response);
       toast.success("Registered successfully!");
       setTimeout(() => {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { BASE_URL } from "../common/API_URL";
 
 const ResetPassword = () => {
   const { navigate } = useNavigate();               
@@ -22,7 +23,7 @@ const ResetPassword = () => {
         setLoading(true);
         console.log("hello");
         const response = await axios.post(
-          "http://localhost:4000/api/users/resetPassword",
+          `${BASE_URL}/users/resetPassword`,
           { token, password }
         );
         console.log(response);

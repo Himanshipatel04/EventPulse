@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Font Awesome Icons
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import {BASE_URL} from "../common/API_URL"
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+ 
 
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ const Login = () => {
         alert("Password should be at least 6 characters long.");
       }
       const response = await axios.post(
-        "http://localhost:4000/api/users/login",
+        `${BASE_URL}/users/login`,
         { email, password }
       );
       console.log(response.data.data, "..");

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../common/API_URL";
 
 const VerifyEmail = () => {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ const VerifyEmail = () => {
       try {
         console.log(token)
         const response = await axios.post(
-          `http://localhost:4000/api/users/verifyEmail`,
+          `${BASE_URL}/users/verifyEmail`,
           { token }
         );
         console.log(response);
