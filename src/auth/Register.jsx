@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../common/API_URL";
 
 const Signup = () => {
@@ -105,10 +105,10 @@ const Signup = () => {
             Sign Up
           </button>
           <div className="flex justify-between mt-4">
-            <a href="/login" className="text-sm text-teal-700 ">
+            <Link href="/login" className="text-sm text-teal-700 ">
               Already have an account?{" "}
               <span className="hover:underline hover:text-teal-950">Login</span>
-            </a>
+            </Link>
           </div>
         </form>
       </div>

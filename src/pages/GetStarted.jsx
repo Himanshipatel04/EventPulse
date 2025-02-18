@@ -1,5 +1,6 @@
 // src/pages/GetStarted.js
 import React from "react";
+import { Link } from "react-router-dom";
 
 const GetStarted = () => {
   return (
@@ -10,12 +11,12 @@ const GetStarted = () => {
         <p className="text-xl mb-6">
           Organize, manage, and host events with ease. Event Pulse is your all-in-one event management platform!
         </p>
-        <a
+        <Link
           href="/signup"
           className="inline-block bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600"
         >
           Sign Up Now
-        </a>
+        </Link>
       </section>
 
       {/* Features Section */}
@@ -82,12 +83,12 @@ const GetStarted = () => {
         <p className="text-lg mb-6">
           Join thousands of event planners using Event Pulse to host successful events. Start today!
         </p>
-        <a
+        <Link
           href="/signup"
           className="inline-block bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600"
         >
           Sign Up Now
-        </a>
+        </Link>
       </section>
     </div>
   );

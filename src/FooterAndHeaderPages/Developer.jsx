@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const DeveloperPage = () => {
   return (
@@ -84,14 +85,14 @@ const DeveloperPage = () => {
             <p className="text-lg text-gray-700">
               You can access our public GitHub repository to view the source code and contribute:
             </p>
-            <a
+            <Link
               href="https://github.com/your-repository"
               target="_blank"
               rel="noopener noreferrer"
               className="text-teal-700 font-semibold mt-4 inline-block"
             >
               Visit the GitHub Repository
-            </a>
+            </Link>
           </section>
 
           {/* Contact Information */}

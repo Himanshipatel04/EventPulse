@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Calendar,
   Clock,
@@ -112,17 +112,17 @@ const EventDetails = () => {
         {/* Register Button */}
         <div className="text-center mt-6">
           {user && user.role === "admin" ? (
-            <a href={`/sponsor/${event._id}/${event.title}`}>               
+            <Link href={`/sponsor/${event._id}/${event.title}`}>               
               <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-all duration-300 shadow-md hover:shadow-lg ml-4">
                 Sponsor Now
               </button>
-            </a>
+            </Link>
           ) : (
-            <a href={`/register/${event._id}/${event.title}`}>
+            <Link href={`/register/${event._id}/${event.title}`}>
               <button className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-all duration-300 shadow-md hover:shadow-lg">
                 Register Now
               </button>
-            </a>
+            </Link>
           )}
         </div>
       </div>

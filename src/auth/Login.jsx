@@ -124,13 +124,12 @@ const Login = () => {
             >
               Forgot Password?
             </Link>
-            <a href="/signup" className="text-sm text-teal-700 ">
+            <Link to="/signup" className="text-sm text-teal-700 ">
               Don't have an account?{" "}
               <span className="hover:underline hover:text-teal-950">
-                {" "}
                 Sign Up
               </span>
-            </a>
+            </Link>
           </div>
         </form>
       </div>
