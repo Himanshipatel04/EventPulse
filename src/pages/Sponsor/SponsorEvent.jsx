@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../../context/UserContext";
+import { BASE_URL } from "../../common/API_URL";
 
 const SponsorForm = () => {
   const { eventId,eventTitle } = useParams(); // Get event ID from URL
@@ -25,7 +26,7 @@ const SponsorForm = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:4000/api/sponsor/createSponsor", {
+      const response = await axios.post(`${BASE_URL}/sponsor/createSponsor`, {
         eventId,
         sponsorId:user._id,
         sponsorName: formData.sponsorName,

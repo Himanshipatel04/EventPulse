@@ -15,6 +15,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { FaChair } from "react-icons/fa";
+import { BASE_URL } from "../../common/API_URL";
 
 const SponsorProfile = () => {
   const { user } = useUser();
@@ -30,7 +31,7 @@ const SponsorProfile = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/sponsor/getEventsForSponsor/${user._id}`
+        `${BASE_URL}/sponsor/getEventsForSponsor/${user._id}`
       );
       setEvents(response.data.data);
       console.log(response.data.data);
@@ -46,7 +47,7 @@ const SponsorProfile = () => {
     setIsParticipantsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+        `${BASE_URL}/events/getParticipantsForEvent/${eventId}`
       );
       console.log(response.data.data.participants);
       setParticipants(response.data.data.participants);

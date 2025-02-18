@@ -46,7 +46,7 @@ const ApprovedEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getSponsorsForEvent/${eventId}`
+        `${BASE_URL}/events/getSponsorsForEvent/${eventId}`
       );
       setSponsors(response.data.data.sponsors);
       
@@ -63,7 +63,7 @@ const ApprovedEventsSection = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/events/getParticipantsForEvent/${eventId}`
+        `${BASE_URL}/events/getParticipantsForEvent/${eventId}`
       );
       setParticipants(response.data.data.participants);
     } catch (error) {
@@ -80,7 +80,7 @@ const ApprovedEventsSection = () => {
   const onDelete = async (eventId) => {
     try {
       await axios.delete(
-        `http://localhost:4000/api/admin/deleteEvent/${eventId}`
+        `${BASE_URL}/admin/deleteEvent/${eventId}`
       );
       fetchEvents();
     } catch (error) {
