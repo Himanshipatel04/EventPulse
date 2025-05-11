@@ -67,11 +67,6 @@ const Header = () => {
         {/* Call to Action Button */}
         {!user ? (
           <div className="flex items-center justify-center space-x-2">
-            <Link to="/login">
-              <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-lg transition">
-                SignUp
-              </button>
-            </Link>
             <div className="block md:hidden">
               <IoMenu onClick={() => setShowMenu(true)} size={32} />
             </div>
@@ -166,6 +161,17 @@ const Header = () => {
           >
             Contact
           </Link>
+          {!user && (
+            <Link
+              onClick={() => {
+                setShowMenu(false);
+              }}
+              to="/login"
+              className="text-white bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+            >
+              SignIn
+            </Link>
+          )}
           {user ? (
             <div className="flex flex-col space-y-5">
               <Link
