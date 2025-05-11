@@ -186,7 +186,7 @@ const Header = () => {
               <Link
                 to={
                   user.role === "Organizer"
-                    ? "/organizer-profile"
+                    ? "/organizer-dashboard"
                     : user.role === "Attendee"
                     ? "/attendee-dashboard"
                     : user.role === "Sponsor"
