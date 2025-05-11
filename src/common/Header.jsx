@@ -70,6 +70,15 @@ const Header = () => {
             <div className="block md:hidden">
               <IoMenu onClick={() => setShowMenu(true)} size={32} />
             </div>
+            <Link
+              onClick={() => {
+                setShowMenu(false);
+              }}
+              to="/login"
+              className="text-white hidden sm:block bg-teal-500 hover:bg-teal-600 transition p-2 outline outline-1 outline-teal-500 rounded-md text-center"
+            >
+              SignIn
+            </Link>
           </div>
         ) : (
           <div className="flex">
