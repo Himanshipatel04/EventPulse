@@ -401,8 +401,8 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-white py-16 h-fit">
-        <div className="mx-auto">
+      <section className="bg-white py-16 h-fit ">
+        <div className="mx-auto max-w-[90%] flex flex-col justify-center items-center">
           <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
             Frequently Asked Questions
           </h2>
