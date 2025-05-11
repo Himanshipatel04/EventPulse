@@ -5,8 +5,100 @@ import { useUser } from "../context/UserContext";
 import { Calendar, MapPin, Users, BadgeCheck } from "lucide-react";
 import axios from "axios";
 import { BASE_URL } from "../common/API_URL";
+import { motion } from "framer-motion";
 
 const Home = () => {
+  const testimonials = [
+    {
+      name: "Aarav Mehta",
+      designation: "Event Organizer, TechVerse",
+      message:
+        "EventPulse streamlined our entire event process. From registrations to feedback, everything was seamless!",
+    },
+    {
+      name: "Sneha Rathi",
+      designation: "Marketing Lead, InnovateX",
+      message:
+        "The analytics and engagement tools in EventPulse helped us connect better with our audience. Loved the experience!",
+    },
+    {
+      name: "Kabir Singh",
+      designation: "Speaker & Industry Expert",
+      message:
+        "Thanks to EventPulse, I was able to engage with attendees before, during, and after the event effortlessly.",
+    },
+    {
+      name: "Aarav Mehta",
+      designation: "Event Organizer, TechVerse",
+      message:
+        "EventPulse streamlined our entire event process. From registrations to feedback, everything was seamless!",
+    },
+    {
+      name: "Sneha Rathi",
+      designation: "Marketing Lead, InnovateX",
+      message:
+        "The analytics and engagement tools in EventPulse helped us connect better with our audience. Loved the experience!",
+    },
+    {
+      name: "Kabir Singh",
+      designation: "Speaker & Industry Expert",
+      message:
+        "Thanks to EventPulse, I was able to engage with attendees before, during, and after the event effortlessly.",
+    },
+    {
+      name: "Aarav Mehta",
+      designation: "Event Organizer, TechVerse",
+      message:
+        "EventPulse streamlined our entire event process. From registrations to feedback, everything was seamless!",
+    },
+    {
+      name: "Sneha Rathi",
+      designation: "Marketing Lead, InnovateX",
+      message:
+        "The analytics and engagement tools in EventPulse helped us connect better with our audience. Loved the experience!",
+    },
+    {
+      name: "Kabir Singh",
+      designation: "Speaker & Industry Expert",
+      message:
+        "Thanks to EventPulse, I was able to engage with attendees before, during, and after the event effortlessly.",
+    },
+  ];
+
+  const faqs = [
+    {
+    question: "What is EventPulse?",
+    answer: "EventPulse is a platform to manage and promote events efficiently.",
+  },
+  {
+    question: "Is EventPulse free to use?",
+    answer: "Yes, it's free for individuals and small organizations.",
+  },
+  {
+    question: "Can I list multiple events?",
+    answer: "Absolutely. You can list as many events as you'd like.",
+  },
+  {
+    question: "How do I register on EventPulse?",
+    answer: "Simply click on the register button on the homepage and fill in the required details to create an account.",
+  },
+  {
+    question: "How can I update my event details?",
+    answer: "To update event details, go to your event dashboard and click on 'Edit Event'. Make the necessary changes and save.",
+  },
+  {
+    question: "Can I cancel my event?",
+    answer: "Yes, you can cancel your event anytime through your event dashboard. However, if you’ve paid for promotion, no refund will be issued for those services.",
+  },
+
+  ];
+
+  const [openAccordian, setOpenAccordian] = useState(-1);
+
+  const handleOpenAccordian = (id) => {
+    setOpenAccordian((prev) => (prev == id ? -1 : id));
+  };
+
   const carouselSettings = {
     dots: true,
     infinite: true,
@@ -36,9 +128,7 @@ const Home = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/events/allEvents`
-        );
+        const response = await axios.get(`${BASE_URL}/events/allEvents`);
         console.log(response);
         setUpcomingEvents(response.data.data.events);
       } catch (error) {
@@ -189,7 +279,10 @@ const Home = () => {
 
                     {/* Organizer */}
                     {(user?.role === "Organizer" || user?.role === "Admin") && (
-                      <Link to={`/event-details/${event._id}`} className="w-full">
+                      <Link
+                        to={`/event-details/${event._id}`}
+                        className="w-full"
+                      >
                         <button className="bg-teal-500 hover:bg-teal-600 text-white py-2 w-full rounded-lg text-sm transition">
                           View Event Details
                         </button>
@@ -280,37 +373,66 @@ const Home = () => {
 
       {/* Testimonials Section */}
       <section className="bg-teal-100 text-white py-16">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
             What Our Users Say
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs text-center">
-              <p className="text-gray-700 italic">
-                "Event Pulse made managing our conference so easy. The tools
-                were intuitive and saved us so much time!"
-              </p>
-              <p className="mt-4 font-semibold text-teal-700">John D.</p>
-              <p className="text-sm text-gray-500">Event Organizer</p>
-              <img
-                src="https://images.unsplash.com/photo-1521747116043-5bfb8e3f2e47" // Real URL
-                alt="John D."
-                className="w-20 h-20 rounded-full mx-auto mt-4"
-              />
+          <div className="carouselAnimation">
+            <div className="carousel">
+              {[...testimonials, ...testimonials].map((value, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-lg shadow-lg max-w-xs text-center flex-shrink-0"
+                >
+                  <p className="text-gray-700 italic">{value.message}</p>
+                  <p className="mt-4 font-semibold text-teal-700">
+                    {value.name}
+                  </p>
+                  <p className="text-sm text-gray-500">{value.designation}</p>
+                  <img
+                    src="https://images.unsplash.com/photo-1521747116043-5bfb8e3f2e47"
+                    alt={value.name}
+                    className="w-20 h-20 rounded-full mx-auto mt-4"
+                  />
+                </div>
+              ))}
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-xs text-center">
-              <p className="text-gray-700 italic">
-                "A fantastic platform for event coordination. We were able to
-                keep everything on track with ease."
-              </p>
-              <p className="mt-4 font-semibold text-teal-700">Samantha K.</p>
-              <p className="text-sm text-gray-500">Corporate Planner</p>
-              <img
-                src="https://images.unsplash.com/photo-1518601166159-bd8f86d120b4" // Real URL
-                alt="Samantha K."
-                className="w-20 h-20 rounded-full mx-auto mt-4"
-              />
-            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 h-fit">
+        <div className="mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">
+            Frequently Asked Questions
+          </h2>
+          <div className="mx-auto flex max-w-3xl flex-col gap-2">
+            {faqs.map((value, id) => (
+              <div key={id} className="w-full">
+                <p className="w-full bg-gray-300 p-4 rounded-lg text-lg flex justify-between items-center">
+                  <span>{value.question}</span>
+                  <span
+                    onClick={() => handleOpenAccordian(id)}
+                    className="cursor-pointer text-3xl"
+                  >
+                    {id === openAccordian ? "-" : "+"}
+                  </span>
+                </p>
+
+                <motion.div
+                  initial={{ opacity: 0, maxHeight: 0 }}
+                  animate={{
+                    opacity: openAccordian === id ? 1 : 0,
+                    maxHeight: openAccordian === id ? 100 : 0,
+                    padding: openAccordian === id ? "16px" : 0,
+                  }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-gray-200 rounded-lg mt-1"
+                >
+                  {value.answer}
+                </motion.div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

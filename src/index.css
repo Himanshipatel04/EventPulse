@@ -23,30 +23,54 @@
 
 /* Apply to the entire website */
 * {
-  scrollbar-width: thin;  /* For Firefox */
-  scrollbar-color: #0f766e #f0f0f0;  /* Thumb & Track color */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #0f766e #f0f0f0; /* Thumb & Track color */
   scroll-behavior: smooth;
 }
 
 /* WebKit-based browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 8px;  /* Scrollbar width */
+  width: 8px; /* Scrollbar width */
   scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f766e;  /* Track background color */
+  background: #0f766e; /* Track background color */
   border-radius: 10px;
   scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0f766e;  /* Scrollbar color */
+  background: #0f766e; /* Scrollbar color */
   border-radius: 10px;
   scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0f766e;  /* Hover color */
+  background: #0f766e; /* Hover color */
   scroll-behavior: smooth;
+}
+
+.carouselAnimation {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel {
+  display: flex;
+  gap: 20px;
+  animation: scroll 30s linear infinite;
+}
+
+.carousel:hover{
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
